@@ -1,10 +1,11 @@
 package me.jwenzel.habittracker;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ListView;
 
-import java.util.ArrayList;
+import me.jwenzel.habittracker.view.DailyHabitSummaryMvpFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -12,12 +13,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ArrayList<String> testArr = new ArrayList<String>();
-        testArr.add("test1");
-        testArr.add("test2");
-        testArr.add("test3");
-        ListView list = (ListView) findViewById(R.id.main_list_view);
-        DailyHabitAdapter arrayAdapter = new DailyHabitAdapter(this, testArr);
-        list.setAdapter(arrayAdapter);
+
+        Fragment fragment = new DailyHabitSummaryMvpFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.main_activity_fragment_container, fragment).commit();
     }
 }
