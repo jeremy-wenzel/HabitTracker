@@ -1,4 +1,4 @@
-package me.jwenzel.habittracker.utility_objects;
+package me.jwenzel.habittracker.utilities;
 
 /**
  * Created by Jeremy on 2/19/2018.
@@ -14,6 +14,7 @@ public enum DayOfWeekEnum {
     SUNDAY(6);
 
     private final int value;
+    public static int MAX_DAYS = 7;
 
     DayOfWeekEnum(int value) {
         this.value = value;

@@ -1,8 +1,14 @@
 package me.jwenzel.habittracker.business_objects;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+
 import java.util.List;
 
-import me.jwenzel.habittracker.utility_objects.DayOfWeekEnum;
+import me.jwenzel.habittracker.utilities.DayOfWeekEnum;
+import me.jwenzel.habittracker.utilities.DaysOfWeekEnumTypeConverter;
+import me.jwenzel.habittracker.utilities.DifficultyConverter;
 
 /**
  * Created by Jeremy on 2/19/2018.
@@ -10,24 +16,51 @@ import me.jwenzel.habittracker.utility_objects.DayOfWeekEnum;
 
 public abstract class BaseHabit {
 
+    @PrimaryKey(autoGenerate = true)
+    private int primaryKey;
+
+    @ColumnInfo(name = "name")
     protected String mName;
-    protected String mDesc;
-    protected boolean mUsingReminders;
+
+    @ColumnInfo(name = "desc")
+    protected String mDescription;
+
+    @ColumnInfo(name = "is_using_reminders")
+    protected boolean mIsUsingReminders;
+
+    @ColumnInfo(name = "reminder_days")
+    @TypeConverters({DaysOfWeekEnumTypeConverter.class})
     protected List<DayOfWeekEnum> mReminderDays;
+
+    @ColumnInfo(name = "difficulty")
+    @TypeConverters(DifficultyConverter.class)
     protected DifficultyEnum mDifficulty;
+
     // TODO: There has to be a better way of doing time
+
+    @ColumnInfo(name = "reminder_hour")
     protected int mReminderHour;
+
+    @ColumnInfo(name = "reminder_minute")
     protected int mReminderMinute;
 
-    BaseHabit(String name, String desc, boolean isUsingReminders, List<DayOfWeekEnum> reminderDays,
+    BaseHabit(String name, String description, boolean isUsingReminders, List<DayOfWeekEnum> reminderDays,
                      int reminderHour, int reminderMinute, DifficultyEnum difficulty) {
         this.mName = name;
-        this.mDesc = desc;
-        this.mUsingReminders = isUsingReminders;
+        this.mDescription = description;
+        this.mIsUsingReminders = isUsingReminders;
         this.mReminderDays = reminderDays;
         this.mReminderHour = reminderHour;
-        this.mReminderMinute = reminderHour;
+        this.mReminderMinute = reminderMinute;
         this.mDifficulty = difficulty;
+    }
+
+    public int getPrimaryKey() {
+        return primaryKey;
+    }
+
+    public void setPrimaryKey(int primaryKey) {
+        this.primaryKey = primaryKey;
     }
 
     /**
@@ -43,7 +76,7 @@ public abstract class BaseHabit {
      * @return
      */
     public String getDescription() {
-        return mDesc;
+        return mDescription;
     }
 
     /**
@@ -51,7 +84,7 @@ public abstract class BaseHabit {
      * @return True if so, false otherwise
      */
     public boolean isUsingReminders() {
-        return mUsingReminders;
+        return mIsUsingReminders;
     }
 
     /**
@@ -68,5 +101,13 @@ public abstract class BaseHabit {
      */
     public DifficultyEnum getDifficulty() {
         return mDifficulty;
+    }
+    
+    public int getReminderHour() {
+        return mReminderHour;
+    }
+    
+    public int getReminderMinute() {
+        return mReminderMinute;
     }
 }

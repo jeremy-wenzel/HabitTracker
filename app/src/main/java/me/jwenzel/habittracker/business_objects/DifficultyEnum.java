@@ -5,8 +5,18 @@ package me.jwenzel.habittracker.business_objects;
  */
 
 public enum DifficultyEnum {
-    EASY,
-    NOVICE,
-    FORMIDIBLE,
-    LEGENDARY,
+    EASY(0),
+    NOVICE(1),
+    FORMIDIBLE(2),
+    LEGENDARY(3);
+
+    private final int value;
+
+    DifficultyEnum(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
 }
