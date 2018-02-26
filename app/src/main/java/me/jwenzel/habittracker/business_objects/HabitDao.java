@@ -8,10 +8,6 @@ import android.arch.persistence.room.Update;
 
 import java.util.List;
 
-/**
- * Created by Jeremy on 2/24/2018.
- */
-
 @Dao
 public interface HabitDao {
     // Insert Daily Habits
@@ -26,12 +22,23 @@ public interface HabitDao {
     @Update
     void updateAll(DailyHabit... dailyHabits);
 
+    // Get All daily habits
     @Query("SELECT * FROM dailyhabit")
     List<DailyHabit> getAllDailyHabits();
 
     // Insert Regular Habits
+    @Insert
+    void insertAll(RegularHabit... regularHabits);
 
     // Delete Regular Habits
+    @Delete
+    void deleteAll(RegularHabit... regularHabits);
 
     // Update Regular Habits
+    @Update
+    void updateAll(RegularHabit... regularHabits);
+
+    // Get All regular Habits
+    @Query("SELECT * FROM regularhabit")
+    List<RegularHabit> getAllRegularHabits();
 }

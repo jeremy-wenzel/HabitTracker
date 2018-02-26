@@ -10,10 +10,6 @@ import me.jwenzel.habittracker.utilities.DayOfWeekEnum;
 import me.jwenzel.habittracker.utilities.DaysOfWeekEnumTypeConverter;
 import me.jwenzel.habittracker.utilities.DifficultyConverter;
 
-/**
- * Created by Jeremy on 2/19/2018.
- */
-
 public abstract class BaseHabit {
 
     @PrimaryKey(autoGenerate = true)
@@ -36,22 +32,15 @@ public abstract class BaseHabit {
     @TypeConverters(DifficultyConverter.class)
     protected DifficultyEnum mDifficulty;
 
-    // TODO: There has to be a better way of doing time
 
-    @ColumnInfo(name = "reminder_hour")
-    protected int mReminderHour;
 
-    @ColumnInfo(name = "reminder_minute")
-    protected int mReminderMinute;
 
     BaseHabit(String name, String description, boolean isUsingReminders, List<DayOfWeekEnum> reminderDays,
-                     int reminderHour, int reminderMinute, DifficultyEnum difficulty) {
+                     DifficultyEnum difficulty) {
         this.mName = name;
         this.mDescription = description;
         this.mIsUsingReminders = isUsingReminders;
         this.mReminderDays = reminderDays;
-        this.mReminderHour = reminderHour;
-        this.mReminderMinute = reminderMinute;
         this.mDifficulty = difficulty;
     }
 
@@ -103,11 +92,5 @@ public abstract class BaseHabit {
         return mDifficulty;
     }
     
-    public int getReminderHour() {
-        return mReminderHour;
-    }
-    
-    public int getReminderMinute() {
-        return mReminderMinute;
-    }
+
 }

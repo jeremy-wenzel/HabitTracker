@@ -5,22 +5,16 @@
               android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv_daily_habit_title"
+        android:id="@+id/tv_regular_habit_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sample Name"/>
 
     <TextView
-        android:id="@+id/tv_daily_habit_desc"
+        android:id="@+id/tv_regular_habit_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sample description"/>
-
-    <TextView
-        android:id="@+id/tv_daily_habit_active"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Active"/>
 
     <CheckBox
         android:id="@+id/cb_daily_habit_reminder"
@@ -32,4 +26,5 @@
         android:id="@+id/tv_daily_habit_reminder_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
 </LinearLayout>

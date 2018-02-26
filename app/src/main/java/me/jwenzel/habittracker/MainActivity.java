@@ -10,12 +10,13 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.jwenzel.habittracker.business_objects.DailyHabit;
+import me.jwenzel.habittracker.business_objects.RegularHabit;
 import me.jwenzel.habittracker.business_objects.DifficultyEnum;
 import me.jwenzel.habittracker.business_objects.HabitDao;
 import me.jwenzel.habittracker.business_objects.HabitDatabase;
 import me.jwenzel.habittracker.utilities.DayOfWeekEnum;
-import me.jwenzel.habittracker.view.DailyHabitSummaryMvpFragment;
+import me.jwenzel.habittracker.view.RegularHabitSummaryMvpFragment;
+import me.jwenzel.habittracker.view.RegularHabitSummaryMvpFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         new TestAsyncClass().execute();
 
-        Fragment fragment = new DailyHabitSummaryMvpFragment();
+        Fragment fragment = new RegularHabitSummaryMvpFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.main_activity_fragment_container, fragment).commit();
     }
@@ -40,12 +41,12 @@ public class MainActivity extends AppCompatActivity {
             HabitDao habitDao = db.habitDao();
 
             // Insert newly created entity
-            DailyHabit dh = new DailyHabit("name", "desc", true, new ArrayList<DayOfWeekEnum>(0), 0, 0, DifficultyEnum.EASY, new ArrayList<DayOfWeekEnum>(0));
+            RegularHabit dh = new RegularHabit("TEst", "Desc", true, new ArrayList<DayOfWeekEnum>(), DifficultyEnum.EASY, 0, 0, 0, 0, 0);
             habitDao.insertAll(dh);
 
-            List<DailyHabit> list = habitDao.getAllDailyHabits();
+            List<RegularHabit> list = habitDao.getAllRegularHabits();
 
-            for (DailyHabit test : list) {
+            for (RegularHabit test : list) {
                 System.out.println(test.getName());
             }
 
