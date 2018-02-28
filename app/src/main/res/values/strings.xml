@@ -3,4 +3,18 @@
     <string name="action_settings">Settings</string>
 
     <string name="reminders_question">Reminders?</string>
+
+    <string-array name="days_of_the_week">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+
+    <string name="select_days">Select Days</string>
+    <string name="accept">Accept</string>
+    <string name="cancel">Cancel</string>
 </resources>
