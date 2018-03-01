@@ -8,6 +8,7 @@ import java.util.List;
 
 import me.jwenzel.habittracker.utilities.DayOfWeekEnum;
 import me.jwenzel.habittracker.utilities.DaysOfWeekEnumTypeConverter;
+import me.jwenzel.habittracker.utilities.SimpleTimeConverter;
 
 @Entity
 public class DailyHabit extends BaseHabit {
@@ -18,19 +19,16 @@ public class DailyHabit extends BaseHabit {
 
     // TODO: There has to be a better way of doing time
 
-    @ColumnInfo(name = "reminder_hour")
-    private int mReminderHour;
-
-    @ColumnInfo(name = "reminder_minute")
-    private int mReminderMinute;
+    @ColumnInfo(name = "reminder_time")
+    @TypeConverters(SimpleTimeConverter.class)
+    private SimpleTime mReminderTime;
 
     public DailyHabit(String name, String description, boolean isUsingReminders, List<DayOfWeekEnum> reminderDays,
-               int reminderHour, int reminderMinute, DifficultyEnum difficulty, List<DayOfWeekEnum> activeDays) {
+               SimpleTime reminderTime, DifficultyEnum difficulty, List<DayOfWeekEnum> activeDays) {
         super(name, description, isUsingReminders, reminderDays, difficulty);
 
         this.mActiveDays = activeDays;
-        this.mReminderHour = reminderHour;
-        this.mReminderMinute = reminderMinute;
+        this.mReminderTime = reminderTime;
     }
 
 
@@ -38,11 +36,7 @@ public class DailyHabit extends BaseHabit {
         return mActiveDays;
     }
 
-    public int getReminderHour() {
-        return mReminderHour;
-    }
-
-    public int getReminderMinute() {
-        return mReminderMinute;
+    public SimpleTime getReminderTime() {
+        return mReminderTime;
     }
 }

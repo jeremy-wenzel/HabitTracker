@@ -32,9 +32,6 @@ public abstract class BaseHabit {
     @TypeConverters(DifficultyConverter.class)
     protected DifficultyEnum mDifficulty;
 
-
-
-
     BaseHabit(String name, String description, boolean isUsingReminders, List<DayOfWeekEnum> reminderDays,
                      DifficultyEnum difficulty) {
         this.mName = name;
