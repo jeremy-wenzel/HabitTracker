@@ -1,4 +1,4 @@
-package me.jwenzel.habittracker.view;
+package me.jwenzel.habittracker.view.dashboard;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,8 +15,9 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import me.jwenzel.habittracker.R;
-import me.jwenzel.habittracker.presenter.DashboardPresenter;
-import me.jwenzel.habittracker.presenter.DashboardPresenterImpl;
+import me.jwenzel.habittracker.presenter.dashboard.DashboardPresenter;
+import me.jwenzel.habittracker.presenter.dashboard.DashboardPresenterImpl;
+import me.jwenzel.habittracker.view.BaseMvpFragment;
 
 public class DashboardMvpFragment extends BaseMvpFragment<DashboardView, DashboardPresenter> implements DashboardView {
     private ViewPagerAdapter mViewPagerAdapter;

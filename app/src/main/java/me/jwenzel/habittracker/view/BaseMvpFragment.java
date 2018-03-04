@@ -1,6 +1,5 @@
 package me.jwenzel.habittracker.view;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 

@@ -1,10 +1,7 @@
-package me.jwenzel.habittracker.presenter;
+package me.jwenzel.habittracker.presenter.summary;
 
-import me.jwenzel.habittracker.view.DailyHabitSummaryView;
-
-/**
- * Created by Jeremy on 2/19/2018.
- */
+import me.jwenzel.habittracker.presenter.BasePresenterImpl;
+import me.jwenzel.habittracker.view.summary.DailyHabitSummaryView;
 
 public class DailyHabitSummaryPresenterImpl extends BasePresenterImpl<DailyHabitSummaryView> implements DailyHabitSummaryPresenter {
     /**

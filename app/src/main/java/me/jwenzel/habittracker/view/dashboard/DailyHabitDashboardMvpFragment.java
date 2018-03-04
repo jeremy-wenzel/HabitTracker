@@ -1,4 +1,4 @@
-package me.jwenzel.habittracker.view;
+package me.jwenzel.habittracker.view.dashboard;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,8 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import me.jwenzel.habittracker.R;
-import me.jwenzel.habittracker.presenter.DailyHabitDashboardPresenter;
-import me.jwenzel.habittracker.presenter.DailyHabitDashboardPresenterImpl;
+import me.jwenzel.habittracker.presenter.dashboard.DailyHabitDashboardPresenter;
+import me.jwenzel.habittracker.presenter.dashboard.DailyHabitDashboardPresenterImpl;
+import me.jwenzel.habittracker.view.BaseMvpFragment;
 
 public class DailyHabitDashboardMvpFragment extends BaseMvpFragment<DailyHabitDashboardView, DailyHabitDashboardPresenter>
         implements DailyHabitDashboardView {

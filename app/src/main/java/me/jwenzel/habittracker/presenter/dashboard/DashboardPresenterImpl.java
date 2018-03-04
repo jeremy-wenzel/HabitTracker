@@ -1,6 +1,7 @@
-package me.jwenzel.habittracker.presenter;
+package me.jwenzel.habittracker.presenter.dashboard;
 
-import me.jwenzel.habittracker.view.DashboardView;
+import me.jwenzel.habittracker.presenter.BasePresenterImpl;
+import me.jwenzel.habittracker.view.dashboard.DashboardView;
 
 public class DashboardPresenterImpl extends BasePresenterImpl<DashboardView> implements DashboardPresenter {
     /**

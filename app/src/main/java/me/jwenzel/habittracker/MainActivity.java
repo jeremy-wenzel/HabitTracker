@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.Button;
-import me.jwenzel.habittracker.view.DashboardMvpFragment;
+import me.jwenzel.habittracker.view.dashboard.DashboardMvpFragment;
 
 public class MainActivity extends AppCompatActivity {
 

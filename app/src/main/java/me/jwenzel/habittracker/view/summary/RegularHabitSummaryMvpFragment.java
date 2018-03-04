@@ -1,4 +1,4 @@
-package me.jwenzel.habittracker.view;
+package me.jwenzel.habittracker.view.summary;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,8 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import me.jwenzel.habittracker.R;
-import me.jwenzel.habittracker.presenter.RegularHabitSummaryPresenter;
-import me.jwenzel.habittracker.presenter.RegularHabitSummaryPresenterImpl;
+import me.jwenzel.habittracker.presenter.summary.RegularHabitSummaryPresenter;
+import me.jwenzel.habittracker.presenter.summary.RegularHabitSummaryPresenterImpl;
+import me.jwenzel.habittracker.view.BaseMvpFragment;
 
 public class RegularHabitSummaryMvpFragment extends BaseMvpFragment<RegularHabitSummaryView, RegularHabitSummaryPresenter>
         implements RegularHabitSummaryView {

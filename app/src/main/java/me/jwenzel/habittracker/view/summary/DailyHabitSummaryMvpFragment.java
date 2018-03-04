@@ -1,4 +1,4 @@
-package me.jwenzel.habittracker.view;
+package me.jwenzel.habittracker.view.summary;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,12 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import me.jwenzel.habittracker.R;
-import me.jwenzel.habittracker.presenter.DailyHabitSummaryPresenter;
-import me.jwenzel.habittracker.presenter.DailyHabitSummaryPresenterImpl;
-
-/**
- * Created by Jeremy on 2/19/2018.
- */
+import me.jwenzel.habittracker.presenter.summary.DailyHabitSummaryPresenter;
+import me.jwenzel.habittracker.presenter.summary.DailyHabitSummaryPresenterImpl;
+import me.jwenzel.habittracker.view.BaseMvpFragment;
 
 public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSummaryView, DailyHabitSummaryPresenter> implements DailyHabitSummaryView {
     /**

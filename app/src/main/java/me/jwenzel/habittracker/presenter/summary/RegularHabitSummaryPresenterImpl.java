@@ -1,6 +1,7 @@
-package me.jwenzel.habittracker.presenter;
+package me.jwenzel.habittracker.presenter.summary;
 
-import me.jwenzel.habittracker.view.RegularHabitSummaryView;
+import me.jwenzel.habittracker.presenter.BasePresenterImpl;
+import me.jwenzel.habittracker.view.summary.RegularHabitSummaryView;
 
 public class RegularHabitSummaryPresenterImpl extends BasePresenterImpl<RegularHabitSummaryView> implements RegularHabitSummaryPresenter {
     /**
