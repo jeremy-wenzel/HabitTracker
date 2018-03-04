@@ -1,16 +1,13 @@
 package me.jwenzel.habittracker;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
+import android.support.v7.widget.Toolbar;
 import android.widget.Button;
-
-import com.afollestad.materialdialogs.MaterialDialog;
-
-import java.util.ArrayList;
-
-import me.jwenzel.habittracker.dialogs.MasterDialoger;
-import me.jwenzel.habittracker.utilities.DayOfWeekEnum;
+import me.jwenzel.habittracker.view.DashboardMvpFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,38 +17,41 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mButton = findViewById(R.id.test_button);
-
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ArrayList<DayOfWeekEnum> list = new ArrayList<>();
-                list.add(DayOfWeekEnum.MONDAY);
-                list.add(DayOfWeekEnum.SATURDAY);
-                list.add(DayOfWeekEnum.WEDNESDAY);
-                MasterDialoger.buildDaysOfTheWeekDialog(MainActivity.this, list, new MaterialDialog.ListCallbackMultiChoice() {
-
-                    /**
-                     * Return true to allow the check box to be checked, if the alwaysCallSingleChoice() option is
-                     * used.
-                     *
-                     * @param dialog The dialog of which a list item was selected.
-                     * @param which  The indices of the items that were selected.
-                     * @param text   The text of the items that were selected.
-                     * @return True to allow the checkbox to be selected.
-                     */
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
-                        return false;
-                    }
-                }).show();
-            }
-        });
+//        mButton = findViewById(R.id.test_button);
+//
+//        mButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ArrayList<DayOfWeekEnum> list = new ArrayList<>();
+//                list.add(DayOfWeekEnum.MONDAY);
+//                list.add(DayOfWeekEnum.SATURDAY);
+//                list.add(DayOfWeekEnum.WEDNESDAY);
+//                MasterDialoger.buildDaysOfTheWeekDialog(MainActivity.this, list, new MaterialDialog.ListCallbackMultiChoice() {
+//
+//                    /**
+//                     * Return true to allow the check box to be checked, if the alwaysCallSingleChoice() option is
+//                     * used.
+//                     *
+//                     * @param dialog The dialog of which a list item was selected.
+//                     * @param which  The indices of the items that were selected.
+//                     * @param text   The text of the items that were selected.
+//                     * @return True to allow the checkbox to be selected.
+//                     */
+//                    @Override
+//                    public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+//                        return false;
+//                    }
+//                }).show();
+//            }
+//        });
 //        new TestAsyncClass().execute();
 //
-//        Fragment fragment = new RegularHabitSummaryMvpFragment();
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        fragmentManager.beginTransaction().replace(R.id.main_activity_fragment_container, fragment).commit();
+        // TODO: Need to change how we set up the action bar
+        setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
+        ActionBar toolbar = getSupportActionBar();
+        Fragment fragment = new DashboardMvpFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.main_activity_fragment_container, fragment).commit();
     }
 
 //    private class TestAsyncClass extends AsyncTask<Void, Void, Void> {

@@ -1,5 +1,6 @@
 package me.jwenzel.habittracker.view;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
@@ -35,4 +36,8 @@ public abstract class BaseMvpFragment<V extends BaseView, P extends BasePresente
      * @return A new instance of the presenter that we will be using
      */
     protected abstract P createPresenter();
+
+    public String getTitle() {
+        return null;
+    }
 }
