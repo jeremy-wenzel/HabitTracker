@@ -36,7 +36,7 @@ public abstract class BaseMvpFragment<V extends BaseView, P extends BasePresente
      */
     protected abstract P createPresenter();
 
-    public String getTitle() {
-        return null;
+    public int getTitle() {
+        return 0;
     }
 }

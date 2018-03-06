@@ -17,4 +17,7 @@
     <string name="select_days">Select Days</string>
     <string name="accept">Accept</string>
     <string name="cancel">Cancel</string>
+
+    <string name="regular_dashboard_title">Regular</string>
+    <string name="daily_habit_title">Daily</string>
 </resources>
