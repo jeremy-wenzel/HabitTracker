@@ -40,7 +40,8 @@ public class DashboardMvpFragment extends BaseMvpFragment<DashboardView, Dashboa
 
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         mViewPagerAdapter = new ViewPagerAdapter(getFragmentManager());
-        mViewPagerAdapter.addFragment(new DailyHabitDashboardMvpFragment());
+            mViewPagerAdapter.addFragment(new DailyHabitDashboardMvpFragment());
+        mViewPagerAdapter.addFragment(new RegularHabitDashboardMvpFragment());
         mViewPager = view.findViewById(R.id.viewpager);
         mViewPager.setAdapter(mViewPagerAdapter);
 
@@ -55,20 +56,22 @@ public class DashboardMvpFragment extends BaseMvpFragment<DashboardView, Dashboa
      */
     class ViewPagerAdapter extends FragmentPagerAdapter {
 
-        ArrayList<BaseMvpFragment> mFragments = new ArrayList<BaseMvpFragment>();
+        ArrayList<BaseMvpFragment> mFragments = new ArrayList<>();
+        ArrayList<String> mTitles = new ArrayList<>();
 
-        public ViewPagerAdapter(FragmentManager fm) {
+        ViewPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
-        public void addFragment(BaseMvpFragment fragment) {
+        void addFragment(BaseMvpFragment fragment) {
             mFragments.add(fragment);
+            mTitles.add(getString(fragment.getTitle()));
         }
 
         @Nullable
         @Override
         public CharSequence getPageTitle(int position) {
-            return mFragments.get(position).getTitle();
+            return mTitles.get(position);
         }
 
         /**
