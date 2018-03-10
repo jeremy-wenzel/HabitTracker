@@ -2,7 +2,10 @@ package me.jwenzel.habittracker.view;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
+import me.jwenzel.habittracker.R;
 import me.jwenzel.habittracker.presenter.BasePresenter;
 
 public abstract class BaseMvpFragment<V extends BaseView, P extends BasePresenter> extends Fragment implements BaseView {
@@ -36,9 +39,27 @@ public abstract class BaseMvpFragment<V extends BaseView, P extends BasePresente
      */
     protected abstract P createPresenter();
 
+    /**
+     * The title of the fragment that should be shown to users
+     * @return The string resource id to be shown
+     */
     public int getTitle() {
         return 0;
     }
 
+    /**
+     * Starts a new fragment. Can also add the fragment to the backstack if needed
+     * @param fragment The fragment to be started
+     * @param addToBackStack Should the fragment transaction be added to the backstack?
+     */
+    public void startNewFragment(Fragment fragment, boolean addToBackStack) {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction().replace(R.id.main_activity_fragment_container, fragment);
 
+        if (addToBackStack) {
+            transaction.addToBackStack(null);
+        }
+
+        transaction.commit();
+    }
 }

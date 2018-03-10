@@ -12,13 +12,11 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 
-import me.jwenzel.habittracker.MainActivity;
 import me.jwenzel.habittracker.R;
 import me.jwenzel.habittracker.dialogs.MasterDialoger;
 import me.jwenzel.habittracker.presenter.dashboard.DashboardPresenter;
@@ -75,8 +73,7 @@ public class DashboardMvpFragment extends BaseMvpFragment<DashboardView, Dashboa
                         }
 
                         if (fragment != null) {
-                            FragmentManager fragmentManager = getFragmentManager();
-                            fragmentManager.beginTransaction().replace(R.id.main_activity_fragment_container, fragment).addToBackStack(null).commit();
+                            DashboardMvpFragment.this.startNewFragment(fragment, true);
                             return true;
                         }
 
