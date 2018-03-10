@@ -25,4 +25,6 @@
 
     <string name="regular_dashboard_title">Regular</string>
     <string name="daily_habit_title">Daily</string>
+
+    <string name="select_habit">Select Habit</string>
 </resources>

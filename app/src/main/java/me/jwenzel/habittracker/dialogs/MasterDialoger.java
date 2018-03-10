@@ -39,10 +39,10 @@ public final class MasterDialoger {
     public static MaterialDialog.Builder buildAddHabitDialog(@NonNull Context context,
                                                              @NonNull MaterialDialog.ListCallbackSingleChoice callBack) {
         return new MaterialDialog.Builder(context)
-                .title("Select Habit")
+                .title(R.string.select_habit)
                 .items(R.array.new_habit_options)
                 .itemsCallbackSingleChoice(0, callBack)
-                .positiveText("Accept")
-                .negativeText("Cancel");
+                .positiveText(R.string.accept)
+                .negativeText(R.string.cancel);
     }
 }
