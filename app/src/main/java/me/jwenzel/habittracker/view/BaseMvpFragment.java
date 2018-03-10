@@ -39,4 +39,6 @@ public abstract class BaseMvpFragment<V extends BaseView, P extends BasePresente
     public int getTitle() {
         return 0;
     }
+
+
 }

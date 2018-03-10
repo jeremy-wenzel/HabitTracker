@@ -3,6 +3,7 @@ package me.jwenzel.habittracker.view.dashboard;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,10 +12,15 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 
+import me.jwenzel.habittracker.MainActivity;
 import me.jwenzel.habittracker.R;
+import me.jwenzel.habittracker.dialogs.MasterDialoger;
 import me.jwenzel.habittracker.presenter.dashboard.DashboardPresenter;
 import me.jwenzel.habittracker.presenter.dashboard.DashboardPresenterImpl;
 import me.jwenzel.habittracker.view.BaseMvpFragment;
@@ -47,6 +53,38 @@ public class DashboardMvpFragment extends BaseMvpFragment<DashboardView, Dashboa
 
         TabLayout tabLayout = view.findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(mViewPager);
+
+        FloatingActionButton button = view.findViewById(R.id.fab);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MasterDialoger.buildAddHabitDialog(DashboardMvpFragment.this.getContext(), new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                        Fragment fragment = null;
+                        switch (which) {
+                            case 0:
+                                // Create a new fragment and move to it
+                                fragment = new DailyHabitDashboardMvpFragment();
+                                break;
+                            case 1:
+                                // Create a new fragment and move to it
+                                fragment = new RegularHabitDashboardMvpFragment();
+                                break;
+                        }
+
+                        if (fragment != null) {
+                            FragmentManager fragmentManager = getFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.main_activity_fragment_container, fragment).addToBackStack(null).commit();
+                            return true;
+                        }
+
+                        return false;
+                    }
+                }).show();
+            }
+        });
 
         return view;
     }

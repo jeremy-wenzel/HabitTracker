@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.Button;
 import me.jwenzel.habittracker.view.dashboard.DashboardMvpFragment;
 
@@ -51,10 +52,29 @@ public class MainActivity extends AppCompatActivity {
         ActionBar toolbar = getSupportActionBar();
         Fragment fragment = new DashboardMvpFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.main_activity_fragment_container, fragment).commit();
+        fragmentManager.beginTransaction()
+                .add(R.id.main_activity_fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
-//    private class TestAsyncClass extends AsyncTask<Void, Void, Void> {
+    /**
+     * Take care of popping the fragment back stack or finishing the activity
+     * as appropriate.
+     */
+    @Override
+    public void onBackPressed() {
+        FragmentManager fm = getSupportFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            Log.i("MainActivity", "popping backstack");
+            fm.popBackStack();
+        }
+        else {
+            super.onBackPressed();
+        }
+    }
+
+    //    private class TestAsyncClass extends AsyncTask<Void, Void, Void> {
 //
 //        @Override
 //        protected Void doInBackground(Void... voids) {

@@ -28,4 +28,14 @@ public final class MasterDialoger {
                 .positiveText(R.string.accept)
                 .negativeText(R.string.cancel);
     }
+
+    public static MaterialDialog.Builder buildAddHabitDialog(Context context,
+                                                             MaterialDialog.ListCallbackSingleChoice callBack) {
+        return new MaterialDialog.Builder(context)
+                .title("Select Habit")
+                .items(R.array.new_habit_options)
+                .itemsCallbackSingleChoice(-1, callBack)
+                .positiveText("Accept")
+                .negativeText("Cancel");
+    }
 }
