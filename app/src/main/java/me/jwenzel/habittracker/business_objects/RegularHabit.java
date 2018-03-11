@@ -3,6 +3,7 @@ package me.jwenzel.habittracker.business_objects;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import me.jwenzel.habittracker.utilities.DayOfWeekEnum;
@@ -14,6 +15,7 @@ import me.jwenzel.habittracker.utilities.DayOfWeekEnum;
 @Entity
 public class RegularHabit extends BaseHabit {
 
+    // TODO: Change the times to be a Simple time
     @ColumnInfo(name = "reminder_begin_hour")
     private int mReminderBeginHour;
 
@@ -37,6 +39,10 @@ public class RegularHabit extends BaseHabit {
         this.mReminderEndHour = reminderEndHour;
         this.mReminderEndMinute = reminderEndMinute;
         this.mReminderRepeated = reminderRepeated;
+    }
+
+    public static RegularHabit getRegularHabitTestData() {
+        return new RegularHabit("TestRegular", "Reg.Desc", false, new ArrayList<DayOfWeekEnum>(), DifficultyEnum.EASY, 0, 0, 0, 0, 0);
     }
 
     public int getReminderBeginHour() {

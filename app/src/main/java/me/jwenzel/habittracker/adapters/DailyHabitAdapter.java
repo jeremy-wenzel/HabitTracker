@@ -22,14 +22,14 @@ public class DailyHabitAdapter extends ArrayAdapter<DailyHabit> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        //String str = getItem(position);
+        DailyHabit str = getItem(position);
         if (convertView == null) {
             Log.d("TestTag", "The convert view is null");
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_daily_habit, parent, false);
         }
 
-//        TextView tvHabitName = (TextView) convertView.findViewById(R.id.daily_title);
-//        tvHabitName.setText(str);
+        TextView tvHabitName = convertView.findViewById(R.id.daily_title);
+        tvHabitName.setText(str.getName());
         return convertView;
     }
 }

@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.TypeConverters;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import me.jwenzel.habittracker.utilities.DayOfWeekEnum;
@@ -29,6 +30,10 @@ public class DailyHabit extends BaseHabit {
 
         this.mActiveDays = activeDays;
         this.mReminderTime = reminderTime;
+    }
+
+    public static DailyHabit testDailyHabitData() {
+        return new DailyHabit("Test", "Desc", false, new ArrayList<DayOfWeekEnum>(), new SimpleTime(0, 0), DifficultyEnum.EASY, new ArrayList<DayOfWeekEnum>());
     }
 
 
