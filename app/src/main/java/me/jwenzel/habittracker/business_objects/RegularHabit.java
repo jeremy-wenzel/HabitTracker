@@ -2,11 +2,13 @@ package me.jwenzel.habittracker.business_objects;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.TypeConverters;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import me.jwenzel.habittracker.utilities.DayOfWeekEnum;
+import me.jwenzel.habittracker.utilities.SimpleTimeConverter;
 
 /**
  * Created by Jeremy on 2/26/2018.
@@ -15,67 +17,47 @@ import me.jwenzel.habittracker.utilities.DayOfWeekEnum;
 @Entity
 public class RegularHabit extends BaseHabit {
 
-    // TODO: Change the times to be a Simple time
-    @ColumnInfo(name = "reminder_begin_hour")
-    private int mReminderBeginHour;
-
-    @ColumnInfo(name = "reminder_begin_minute")
-    private int mReminderBeginMinute;
-
-    @ColumnInfo(name = "reminder_end_hour")
-    private int mReminderEndHour;
-
-    @ColumnInfo(name = "reminder_end_minute")
-    private int mReminderEndMinute;
-
     @ColumnInfo(name = "reminder_repeated")
     private int mReminderRepeated;
 
-    public RegularHabit(String name, String description, boolean isUsingReminders, List<DayOfWeekEnum> reminderDays, DifficultyEnum difficulty, int reminderBeginHour, int reminderBeginMinute, int reminderEndHour, int reminderEndMinute, int reminderRepeated) {
+    @ColumnInfo(name = "reminder_begin")
+    @TypeConverters(SimpleTimeConverter.class)
+    private SimpleTime mReminderBeginTime;
+
+    @ColumnInfo(name = "reminder_end")
+    @TypeConverters(SimpleTimeConverter.class)
+    private SimpleTime mReminderEndTime;
+
+    public RegularHabit(String name, String description, boolean isUsingReminders, List<DayOfWeekEnum> reminderDays,
+                        DifficultyEnum difficulty, SimpleTime reminderBeginTime, SimpleTime reminderEndTime, int reminderRepeated) {
         super(name, description, isUsingReminders, reminderDays, difficulty);
 
-        this.mReminderBeginHour = reminderBeginHour;
-        this.mReminderBeginMinute = reminderBeginMinute;
-        this.mReminderEndHour = reminderEndHour;
-        this.mReminderEndMinute = reminderEndMinute;
+        this.mReminderBeginTime = reminderBeginTime;
+        this.mReminderEndTime = reminderEndTime;
         this.mReminderRepeated = reminderRepeated;
     }
 
     public static RegularHabit getRegularHabitTestData() {
-        return new RegularHabit("TestRegular", "Reg.Desc", false, new ArrayList<DayOfWeekEnum>(), DifficultyEnum.EASY, 0, 0, 0, 0, 0);
+        return new RegularHabit("TestRegular", "Reg.Desc", false, new ArrayList<DayOfWeekEnum>(),
+                DifficultyEnum.EASY, new SimpleTime(0, 0), new SimpleTime(0,0), 0);
     }
 
-    public int getReminderBeginHour() {
-        return mReminderBeginHour;
+    public SimpleTime getReminderBeginTime() {
+        return mReminderBeginTime;
     }
 
-    public void setReminderBeginHour(int reminderBeginHour) {
-        mReminderBeginHour = reminderBeginHour;
+    public void setReminderBeginTime(SimpleTime reminderBeginTime) {
+        mReminderBeginTime = reminderBeginTime;
     }
 
-    public int getReminderBeginMinute() {
-        return mReminderBeginMinute;
+    public SimpleTime getReminderEndTime() {
+        return mReminderEndTime;
     }
 
-    public void setReminderBeginMinute(int reminderBeginMinute) {
-        mReminderBeginMinute = reminderBeginMinute;
+    public void setReminderEndTime(SimpleTime reminderEndTime) {
+        mReminderEndTime = reminderEndTime;
     }
 
-    public int getReminderEndHour() {
-        return mReminderEndHour;
-    }
-
-    public void setReminderEndHour(int reminderEndHour) {
-        mReminderEndHour = reminderEndHour;
-    }
-
-    public int getReminderEndMinute() {
-        return mReminderEndMinute;
-    }
-
-    public void setReminderEndMinute(int reminderEndMinute) {
-        mReminderEndMinute = reminderEndMinute;
-    }
 
     public int getReminderRepeated() {
         return mReminderRepeated;

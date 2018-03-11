@@ -18,8 +18,6 @@ public class DailyHabit extends BaseHabit {
     @TypeConverters(DaysOfWeekEnumTypeConverter.class)
     private List<DayOfWeekEnum> mActiveDays;
 
-    // TODO: There has to be a better way of doing time
-
     @ColumnInfo(name = "reminder_time")
     @TypeConverters(SimpleTimeConverter.class)
     private SimpleTime mReminderTime;
