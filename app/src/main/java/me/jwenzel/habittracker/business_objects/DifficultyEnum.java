@@ -7,7 +7,7 @@ package me.jwenzel.habittracker.business_objects;
 public enum DifficultyEnum {
     EASY(0),
     NOVICE(1),
-    FORMIDIBLE(2),
+    FORMIDABLE(2),
     LEGENDARY(3);
 
     private final int value;

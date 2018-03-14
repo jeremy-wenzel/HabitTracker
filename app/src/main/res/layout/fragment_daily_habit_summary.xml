@@ -5,22 +5,38 @@
               android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv_daily_habit_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sample Name"/>
+        android:text="@string/habit_name"/>
+
+    <EditText
+        android:id="@+id/et_daily_habit_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/habit_name_hint"/>
 
     <TextView
         android:id="@+id/tv_daily_habit_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sample description"/>
+        android:text="@string/habit_desc"/>
 
-    <TextView
-        android:id="@+id/tv_daily_habit_active"
+    <EditText
+        android:id="@+id/et_daily_habit_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Active"/>
+        android:hint="@string/habit_desc_hint"/>
+
+    <TextView
+        android:id="@+id/tv_daily_habit_active_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/habit_days_active"/>
+
+    <TextView
+        android:id="@+id/tv_daily_habit_active_days"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <CheckBox
         android:id="@+id/cb_daily_habit_reminder"
@@ -32,4 +48,10 @@
         android:id="@+id/tv_daily_habit_reminder_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btn_daily_habit_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save"/>
 </LinearLayout>

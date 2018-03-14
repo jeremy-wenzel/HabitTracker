@@ -8,10 +8,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by Jeremy on 2/24/2018.
- */
-
 public final class DaysOfWeekEnumTypeConverter {
 
     @TypeConverter
@@ -52,5 +48,22 @@ public final class DaysOfWeekEnumTypeConverter {
         returnArr = selectedIndices.toArray(returnArr);
 
         return returnArr;
+    }
+
+    public static List<DayOfWeekEnum> listFromSelectedIndices(Integer[] which) {
+        List<DayOfWeekEnum> selectedDays = new ArrayList<>();
+        DayOfWeekEnum[] values = DayOfWeekEnum.values();
+
+        // TODO: This is really ugly but Java doesn't have LINQ
+        for (Integer day : which) {
+            for (DayOfWeekEnum dayValue : values) {
+                if (dayValue.getValue() == day) {
+                    selectedDays.add(dayValue);
+                    break;
+                }
+            }
+        }
+
+        return selectedDays;
     }
 }

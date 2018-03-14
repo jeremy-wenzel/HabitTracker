@@ -19,6 +19,15 @@
         <item>Regular Habit</item>
     </string-array>
 
+    <string name="difficulty">Difficulty</string>
+
+    <string-array name="difficulty_options">
+        <item>Easy</item>
+        <item>Novice</item>
+        <item>Formidable</item>
+        <item>Legendary</item>
+    </string-array>
+
     <string name="select_days">Select Days</string>
     <string name="accept">Accept</string>
     <string name="cancel">Cancel</string>
@@ -27,4 +36,11 @@
     <string name="daily_habit_title">Daily</string>
 
     <string name="select_habit">Select Habit</string>
+
+    <string name="habit_name">Habit Name</string>
+    <string name="habit_name_hint">Enter the name of the habit</string>
+    <string name="habit_desc">Habit Description (optional)</string>
+    <string name="habit_desc_hint">Enter the description of the habit</string>
+    <string name="habit_days_active">Days Active</string>
+    <string name="save">Save</string>
 </resources>

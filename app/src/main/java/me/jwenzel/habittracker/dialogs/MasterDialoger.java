@@ -45,4 +45,14 @@ public final class MasterDialoger {
                 .positiveText(R.string.accept)
                 .negativeText(R.string.cancel);
     }
+
+    public static MaterialDialog.Builder buildDifficultyDialog(@NonNull Context context,
+                                                               @NonNull MaterialDialog.ListCallbackSingleChoice callBack) {
+        return new MaterialDialog.Builder(context)
+                .title(R.string.difficulty)
+                .items(R.array.difficulty_options)
+                .itemsCallbackSingleChoice(0, callBack)
+                .positiveText(R.string.accept)
+                .negativeText(R.string.cancel);
+    }
 }

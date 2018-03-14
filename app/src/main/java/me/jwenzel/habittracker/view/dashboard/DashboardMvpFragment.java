@@ -22,6 +22,8 @@ import me.jwenzel.habittracker.dialogs.MasterDialoger;
 import me.jwenzel.habittracker.presenter.dashboard.DashboardPresenter;
 import me.jwenzel.habittracker.presenter.dashboard.DashboardPresenterImpl;
 import me.jwenzel.habittracker.view.BaseMvpFragment;
+import me.jwenzel.habittracker.view.summary.DailyHabitSummaryMvpFragment;
+import me.jwenzel.habittracker.view.summary.RegularHabitSummaryMvpFragment;
 
 public class DashboardMvpFragment extends BaseMvpFragment<DashboardView, DashboardPresenter> implements DashboardView {
     private ViewPagerAdapter mViewPagerAdapter;
@@ -64,11 +66,11 @@ public class DashboardMvpFragment extends BaseMvpFragment<DashboardView, Dashboa
                         switch (which) {
                             case 0:
                                 // Create a new fragment and move to it
-                                fragment = new DailyHabitDashboardMvpFragment();
+                                fragment = new DailyHabitSummaryMvpFragment();
                                 break;
                             case 1:
                                 // Create a new fragment and move to it
-                                fragment = new RegularHabitDashboardMvpFragment();
+                                fragment = new RegularHabitSummaryMvpFragment();
                                 break;
                         }
 

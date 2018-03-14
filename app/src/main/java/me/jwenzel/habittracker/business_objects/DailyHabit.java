@@ -22,6 +22,10 @@ public class DailyHabit extends BaseHabit {
     @TypeConverters(SimpleTimeConverter.class)
     private SimpleTime mReminderTime;
 
+    /*
+        TODO: We do not need reminder days for Daily Habits because we only remind once a day.
+        This means that we can imply that active days are also the reminder days
+     */
     public DailyHabit(String name, String description, boolean isUsingReminders, List<DayOfWeekEnum> reminderDays,
                SimpleTime reminderTime, DifficultyEnum difficulty, List<DayOfWeekEnum> activeDays) {
         super(name, description, isUsingReminders, reminderDays, difficulty);
