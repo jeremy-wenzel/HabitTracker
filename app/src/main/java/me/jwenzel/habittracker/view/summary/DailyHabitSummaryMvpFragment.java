@@ -16,6 +16,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.jwenzel.habittracker.DailyHabitInsertAsyncTask;
+import me.jwenzel.habittracker.DatabaseManager;
 import me.jwenzel.habittracker.R;
 import me.jwenzel.habittracker.business_objects.DailyHabit;
 import me.jwenzel.habittracker.business_objects.DifficultyEnum;
@@ -30,6 +32,7 @@ import me.jwenzel.habittracker.view.BaseMvpFragment;
 
 public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSummaryView, DailyHabitSummaryPresenter> implements DailyHabitSummaryView {
 
+    // TODO: We need to rename these
     private EditText mNameInput;
     private EditText mDescInput;
     private TextView mDaysActive;
@@ -70,6 +73,10 @@ public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSumm
                 MasterDialoger.buildDaysOfTheWeekDialog(DailyHabitSummaryMvpFragment.this.getContext(), mActiveDays, new MaterialDialog.ListCallbackMultiChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+
+                        /*
+                         * TODO: This is god awful but it mostly works
+                         */
                         List<DayOfWeekEnum> dayOfWeekList = DaysOfWeekEnumTypeConverter.listFromSelectedIndices(which);
                         String[] dayArray = getResources().getStringArray(R.array.days_of_the_week);
 
@@ -93,11 +100,7 @@ public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSumm
         });
 
         mSaveButton.setOnClickListener(new View.OnClickListener() {
-            /**
-             * Called when a view has been clicked.
-             *
-             * @param v The view that was clicked.
-             */
+
             @Override
             public void onClick(View v) {
                 // TODO: This logic should go into the presenter
@@ -107,9 +110,9 @@ public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSumm
                 mReminderTime = new SimpleTime(0, 0);
                 mDifficulty = DifficultyEnum.EASY;
 
-                HabitDatabase db = Room.databaseBuilder(DailyHabitSummaryMvpFragment.this.getActivity().getApplicationContext(),
-                        HabitDatabase.class, "habit.db").build();
-                db.habitDao().insertAll(new DailyHabit(name, desc, hasReminders, mActiveDays, mReminderTime, mDifficulty, null));
+                DailyHabit habit = new DailyHabit(name, desc, hasReminders, mActiveDays, mReminderTime, mDifficulty, null);
+
+                new DailyHabitInsertAsyncTask(DatabaseManager.getInstance(DailyHabitSummaryMvpFragment.this.getContext())).execute(habit);
             }
         });
         return view;

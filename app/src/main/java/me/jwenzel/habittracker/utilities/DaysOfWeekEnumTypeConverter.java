@@ -28,8 +28,10 @@ public final class DaysOfWeekEnumTypeConverter {
     public static int fromList(List<DayOfWeekEnum> daysOfTheWeekList) {
         int value = 0;
         // Set the bit value to the day
-        for (DayOfWeekEnum day: daysOfTheWeekList) {
-            value = value + (1 << day.getValue());
+        if (daysOfTheWeekList != null) {
+            for (DayOfWeekEnum day : daysOfTheWeekList) {
+                value = value + (1 << day.getValue());
+            }
         }
         return value;
     }
