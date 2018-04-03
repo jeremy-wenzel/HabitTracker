@@ -1,5 +1,8 @@
 package me.jwenzel.habittracker.presenter.dashboard;
 
+import java.util.List;
+
+import me.jwenzel.habittracker.business_objects.DailyHabit;
 import me.jwenzel.habittracker.presenter.BasePresenterImpl;
 import me.jwenzel.habittracker.view.dashboard.DailyHabitDashboardView;
 
@@ -12,5 +15,15 @@ public class DailyHabitDashboardPresenterImpl extends BasePresenterImpl<DailyHab
      */
     public DailyHabitDashboardPresenterImpl(DailyHabitDashboardView view) {
         super(view);
+    }
+
+    @Override
+    public void onStartCalled() {
+        getView().startDatabaseTask();
+    }
+
+    @Override
+    public void onPostExecuteCalled(List<DailyHabit> dailyHabit) {
+        getView().updateDailyHabitList(dailyHabit);
     }
 }

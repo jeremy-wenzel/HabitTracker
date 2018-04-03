@@ -49,9 +49,13 @@ public class DailyHabitDashboardMvpFragment extends BaseMvpFragment<DailyHabitDa
         mListView = view.findViewById(R.id.list_view_dashboard);
         mListView.setAdapter(mAdapter);
 
-        new SelectDailyHabitAsyncTask(DatabaseManager.getInstance(getContext())).execute();
-
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getPresenter().onStartCalled();
     }
 
     @Override
@@ -59,10 +63,21 @@ public class DailyHabitDashboardMvpFragment extends BaseMvpFragment<DailyHabitDa
         return R.string.daily_habit_title;
     }
 
+    @Override
+    public void startDatabaseTask() {
+        new SelectDailyHabitAsyncTask(DatabaseManager.getInstance(getContext())).execute();
+    }
+
+    @Override
+    public void updateDailyHabitList(List<DailyHabit> dailyHabits) {
+        mAdapter = new DailyHabitAdapter(getContext(), dailyHabits);
+        mListView.setAdapter(mAdapter);
+    }
+
     private class SelectDailyHabitAsyncTask extends AsyncTask<Void, Void, List<DailyHabit>> {
         private DatabaseManager mDatabaseManager;
 
-        public SelectDailyHabitAsyncTask(DatabaseManager databaseManager) {
+        SelectDailyHabitAsyncTask(DatabaseManager databaseManager) {
             mDatabaseManager = databaseManager;
         }
 
@@ -73,8 +88,7 @@ public class DailyHabitDashboardMvpFragment extends BaseMvpFragment<DailyHabitDa
 
         @Override
         protected void onPostExecute(List<DailyHabit> dailyHabits) {
-            mAdapter = new DailyHabitAdapter(getContext(), dailyHabits);
-            mListView.setAdapter(mAdapter);
+            getPresenter().onPostExecuteCalled(dailyHabits);
         }
     }
 }
