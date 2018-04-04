@@ -1,6 +1,5 @@
 package me.jwenzel.habittracker.view.dashboard;
 
-import android.arch.persistence.room.Database;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -36,16 +34,13 @@ public class RegularHabitDashboardMvpFragment extends BaseMvpFragment<RegularHab
         View view = inflater.inflate(R.layout.fragment_habit_dashboard, container, false);
         ButterKnife.bind(this, view);
 
-        ArrayList<RegularHabit> regularHabits = new ArrayList<>();
-        regularHabits.add(RegularHabit.getRegularHabitTestData());
-
-        mAdapter = new RegularHabitAdapter(getContext(), regularHabits);
-        mListView = view.findViewById(R.id.list_view_dashboard);
-        mListView.setAdapter(mAdapter);
-
-        new SelectRegularHabitAsyncTask(DatabaseManager.getInstance(getContext())).execute();
-
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getPresenter().onStartCalled();
     }
 
     @Override
@@ -56,6 +51,17 @@ public class RegularHabitDashboardMvpFragment extends BaseMvpFragment<RegularHab
     @Override
     public int getTitle() {
         return R.string.regular_dashboard_title;
+    }
+
+    @Override
+    public void startSelectHabitTask() {
+        new SelectRegularHabitAsyncTask(DatabaseManager.getInstance(getContext())).execute();
+    }
+
+    @Override
+    public void updateListViewUi(List<RegularHabit> habitList) {
+        mAdapter = new RegularHabitAdapter(getContext(), habitList);
+        mListView.setAdapter(mAdapter);
     }
 
     private class SelectRegularHabitAsyncTask extends AsyncTask<Void, Void, List<RegularHabit>> {
@@ -73,8 +79,7 @@ public class RegularHabitDashboardMvpFragment extends BaseMvpFragment<RegularHab
 
         @Override
         protected void onPostExecute(List<RegularHabit> habits) {
-            mAdapter = new RegularHabitAdapter(getContext(), habits);
-            mListView.setAdapter(mAdapter);
+            getPresenter().onPostExecuteCalled(habits);
         }
     }
 }
