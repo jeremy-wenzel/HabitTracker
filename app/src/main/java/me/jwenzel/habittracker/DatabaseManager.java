@@ -39,4 +39,8 @@ public class DatabaseManager {
     public List<DailyHabit> getDailyHabits() {
         return mDb.habitDao().getAllDailyHabits();
     }
+
+    public List<RegularHabit> getRegularHabits() {
+        return mDb.habitDao().getAllRegularHabits();
+    }
 }

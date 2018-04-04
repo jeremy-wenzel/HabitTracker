@@ -6,46 +6,58 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import me.jwenzel.habittracker.DailyHabitInsertAsyncTask;
+import me.jwenzel.habittracker.DatabaseManager;
 import me.jwenzel.habittracker.R;
+import me.jwenzel.habittracker.business_objects.DifficultyEnum;
+import me.jwenzel.habittracker.business_objects.RegularHabit;
+import me.jwenzel.habittracker.business_objects.SimpleTime;
 import me.jwenzel.habittracker.presenter.summary.RegularHabitSummaryPresenter;
 import me.jwenzel.habittracker.presenter.summary.RegularHabitSummaryPresenterImpl;
+import me.jwenzel.habittracker.utilities.DayOfWeekEnum;
 import me.jwenzel.habittracker.view.BaseMvpFragment;
 
 public class RegularHabitSummaryMvpFragment extends BaseMvpFragment<RegularHabitSummaryView, RegularHabitSummaryPresenter>
         implements RegularHabitSummaryView {
-    /**
-     * Creates the presenter object and returns it. This method used when the
-     * MvpFragment has just started and allows us to set the presenter
-     *
-     * @return A new instance of the presenter that we will be using
-     */
+
+    @BindView(R.id.et_regular_habit_title) protected EditText mHabitTitle;
+    @BindView(R.id.et_regular_habit_desc) protected EditText mHabitDesc;
+    @BindView(R.id.btn_save_regular_habit) protected Button mSaveButton;
+
     @Override
     protected RegularHabitSummaryPresenter createPresenter() {
         return new RegularHabitSummaryPresenterImpl(this);
     }
 
-    /**
-     * Called to have the fragment instantiate its user interface view.
-     * This is optional, and non-graphical fragments can return null (which
-     * is the default implementation).  This will be called between
-     * {@link #onCreate(Bundle)} and {@link #onActivityCreated(Bundle)}.
-     * <p>
-     * <p>If you return a View from here, you will later be called in
-     * {@link #onDestroyView} when the view is being released.
-     *
-     * @param inflater           The LayoutInflater object that can be used to inflate
-     *                           any views in the fragment,
-     * @param container          If non-null, this is the parent view that the fragment's
-     *                           UI should be attached to.  The fragment should not add the view itself,
-     *                           but this can be used to generate the LayoutParams of the view.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed
-     *                           from a previous saved state as given here.
-     * @return Return the View for the fragment's UI, or null.
-     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_regular_habit_summary, container, false);
+        View view = inflater.inflate(R.layout.fragment_regular_habit_summary, container, false);
+        ButterKnife.bind(this, view);
+
+        mSaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name = mHabitTitle.getText().toString();
+                String desc = mHabitDesc.getText().toString();
+
+                DifficultyEnum difficultyEnum = DifficultyEnum.EASY;
+                ArrayList<DayOfWeekEnum> dayOfWeekEnums = new ArrayList<>();
+                dayOfWeekEnums.add(DayOfWeekEnum.WEDNESDAY);
+
+                RegularHabit habit = new RegularHabit(name, desc, false, dayOfWeekEnums, difficultyEnum, new SimpleTime(0, 0), new SimpleTime(0,0), 0);
+                DatabaseManager dbManager = DatabaseManager.getInstance(RegularHabitSummaryMvpFragment.this.getContext());
+
+                new DailyHabitInsertAsyncTask(dbManager).execute(habit);
+            }
+        });
+        return view;
     }
 }
