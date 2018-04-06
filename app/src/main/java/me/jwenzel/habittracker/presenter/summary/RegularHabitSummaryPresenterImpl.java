@@ -13,4 +13,9 @@ public class RegularHabitSummaryPresenterImpl extends BasePresenterImpl<RegularH
     public RegularHabitSummaryPresenterImpl(RegularHabitSummaryView view) {
         super(view);
     }
+
+    @Override
+    public void saveButtonClicked() {
+        getView().saveHabit();
+    }
 }

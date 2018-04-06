@@ -69,33 +69,7 @@ public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSumm
         mDaysActive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: This logic should go into the presenter
-                MasterDialoger.buildDaysOfTheWeekDialog(DailyHabitSummaryMvpFragment.this.getContext(), mActiveDays, new MaterialDialog.ListCallbackMultiChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
-
-                        /*
-                         * TODO: This is god awful but it mostly works
-                         */
-                        List<DayOfWeekEnum> dayOfWeekList = DaysOfWeekEnumTypeConverter.listFromSelectedIndices(which);
-                        String[] dayArray = getResources().getStringArray(R.array.days_of_the_week);
-
-                        StringBuilder builder = new StringBuilder();
-                        boolean first = true;
-                        for (Integer index : which) {
-                            builder.append(dayArray[index]);
-                            if (!first) {
-                                builder.append(",");
-                            }
-                            else {
-                                first = false;
-                            }
-                        }
-
-                        mDays.setText(builder.toString());
-                        return false;
-                    }
-                }).show();
+                getPresenter().daysActiveClicked();
             }
         });
 
@@ -103,18 +77,52 @@ public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSumm
 
             @Override
             public void onClick(View v) {
-                // TODO: This logic should go into the presenter
-                String name = mNameInput.getText().toString();
-                String desc = mDescInput.getText().toString();
-                boolean hasReminders = mReminderCheckbox.isChecked();
-                mReminderTime = new SimpleTime(0, 0);
-                mDifficulty = DifficultyEnum.EASY;
-
-                DailyHabit habit = new DailyHabit(name, desc, hasReminders, mActiveDays, mReminderTime, mDifficulty, null);
-
-                new DailyHabitInsertAsyncTask(DatabaseManager.getInstance(DailyHabitSummaryMvpFragment.this.getContext())).execute(habit);
+                getPresenter().saveButtonClicked();
             }
         });
         return view;
+    }
+
+    @Override
+    public void displayDaysOfWeekDialog() {
+        MasterDialoger.buildDaysOfTheWeekDialog(this.getContext(), mActiveDays, new MaterialDialog.ListCallbackMultiChoice() {
+            @Override
+            public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+
+                /*
+                 * TODO: This is god awful but it mostly works
+                 */
+                List<DayOfWeekEnum> dayOfWeekList = DaysOfWeekEnumTypeConverter.listFromSelectedIndices(which);
+                String[] dayArray = getResources().getStringArray(R.array.days_of_the_week);
+
+                StringBuilder builder = new StringBuilder();
+                boolean first = true;
+                for (Integer index : which) {
+                    builder.append(dayArray[index]);
+                    if (!first) {
+                        builder.append(",");
+                    }
+                    else {
+                        first = false;
+                    }
+                }
+
+                mDays.setText(builder.toString());
+                return false;
+            }
+        }).show();
+    }
+
+    @Override
+    public void saveHabit() {
+        String name = mNameInput.getText().toString();
+        String desc = mDescInput.getText().toString();
+        boolean hasReminders = mReminderCheckbox.isChecked();
+        mReminderTime = new SimpleTime(0, 0);
+        mDifficulty = DifficultyEnum.EASY;
+
+        DailyHabit habit = new DailyHabit(name, desc, hasReminders, mActiveDays, mReminderTime, mDifficulty, null);
+
+        new DailyHabitInsertAsyncTask(DatabaseManager.getInstance(DailyHabitSummaryMvpFragment.this.getContext())).execute(habit);
     }
 }

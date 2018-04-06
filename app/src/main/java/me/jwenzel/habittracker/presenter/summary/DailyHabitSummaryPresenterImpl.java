@@ -13,4 +13,14 @@ public class DailyHabitSummaryPresenterImpl extends BasePresenterImpl<DailyHabit
     public DailyHabitSummaryPresenterImpl(DailyHabitSummaryView view) {
         super(view);
     }
+
+    @Override
+    public void daysActiveClicked() {
+        getView().displayDaysOfWeekDialog();
+    }
+
+    @Override
+    public void saveButtonClicked() {
+        getView().saveHabit();
+    }
 }

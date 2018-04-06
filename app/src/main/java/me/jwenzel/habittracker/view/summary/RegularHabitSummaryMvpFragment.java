@@ -45,19 +45,24 @@ public class RegularHabitSummaryMvpFragment extends BaseMvpFragment<RegularHabit
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = mHabitTitle.getText().toString();
-                String desc = mHabitDesc.getText().toString();
-
-                DifficultyEnum difficultyEnum = DifficultyEnum.EASY;
-                ArrayList<DayOfWeekEnum> dayOfWeekEnums = new ArrayList<>();
-                dayOfWeekEnums.add(DayOfWeekEnum.WEDNESDAY);
-
-                RegularHabit habit = new RegularHabit(name, desc, false, dayOfWeekEnums, difficultyEnum, new SimpleTime(0, 0), new SimpleTime(0,0), 0);
-                DatabaseManager dbManager = DatabaseManager.getInstance(RegularHabitSummaryMvpFragment.this.getContext());
-
-                new DailyHabitInsertAsyncTask(dbManager).execute(habit);
+                getPresenter().saveButtonClicked();
             }
         });
         return view;
+    }
+
+    @Override
+    public void saveHabit() {
+        String name = mHabitTitle.getText().toString();
+        String desc = mHabitDesc.getText().toString();
+
+        DifficultyEnum difficultyEnum = DifficultyEnum.EASY;
+        ArrayList<DayOfWeekEnum> dayOfWeekEnums = new ArrayList<>();
+        dayOfWeekEnums.add(DayOfWeekEnum.WEDNESDAY);
+
+        RegularHabit habit = new RegularHabit(name, desc, false, dayOfWeekEnums, difficultyEnum, new SimpleTime(0, 0), new SimpleTime(0,0), 0);
+        DatabaseManager dbManager = DatabaseManager.getInstance(RegularHabitSummaryMvpFragment.this.getContext());
+
+        new DailyHabitInsertAsyncTask(dbManager).execute(habit);
     }
 }
