@@ -124,5 +124,6 @@ public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSumm
         DailyHabit habit = new DailyHabit(name, desc, hasReminders, mActiveDays, mReminderTime, mDifficulty, null);
 
         new DailyHabitInsertAsyncTask(DatabaseManager.getInstance(DailyHabitSummaryMvpFragment.this.getContext())).execute(habit);
+        finishFragment();
     }
 }

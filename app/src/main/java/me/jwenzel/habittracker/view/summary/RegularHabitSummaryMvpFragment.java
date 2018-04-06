@@ -64,5 +64,6 @@ public class RegularHabitSummaryMvpFragment extends BaseMvpFragment<RegularHabit
         DatabaseManager dbManager = DatabaseManager.getInstance(RegularHabitSummaryMvpFragment.this.getContext());
 
         new DailyHabitInsertAsyncTask(dbManager).execute(habit);
+        finishFragment();
     }
 }

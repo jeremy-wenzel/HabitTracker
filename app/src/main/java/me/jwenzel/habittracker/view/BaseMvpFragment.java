@@ -62,4 +62,8 @@ public abstract class BaseMvpFragment<V extends BaseView, P extends BasePresente
 
         transaction.commit();
     }
+
+    public void finishFragment() {
+        getFragmentManager().popBackStack();
+    }
 }
