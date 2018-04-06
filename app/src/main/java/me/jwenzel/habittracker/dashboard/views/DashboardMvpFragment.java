@@ -43,10 +43,10 @@ public class DashboardMvpFragment extends BaseMvpFragment<DashboardView, Dashboa
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        mViewPagerAdapter = new ViewPagerAdapter(getFragmentManager());
-            mViewPagerAdapter.addFragment(new DailyHabitDashboardMvpFragment());
+
+        mViewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
+        mViewPagerAdapter.addFragment(new DailyHabitDashboardMvpFragment());
         mViewPagerAdapter.addFragment(new RegularHabitDashboardMvpFragment());
         mViewPager = view.findViewById(R.id.viewpager);
         mViewPager.setAdapter(mViewPagerAdapter);
