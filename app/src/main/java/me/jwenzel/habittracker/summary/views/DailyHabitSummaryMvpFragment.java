@@ -1,5 +1,6 @@
 package me.jwenzel.habittracker.summary.views;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -15,12 +16,14 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.jwenzel.habittracker.dashboard.views.DailyHabitDashboardMvpFragment;
 import me.jwenzel.habittracker.database.async_tasks.DailyHabitInsertAsyncTask;
 import me.jwenzel.habittracker.database.DatabaseManager;
 import me.jwenzel.habittracker.R;
 import me.jwenzel.habittracker.business_objects.DailyHabit;
 import me.jwenzel.habittracker.business_objects.DifficultyEnum;
 import me.jwenzel.habittracker.business_objects.SimpleTime;
+import me.jwenzel.habittracker.database.async_tasks.HabitUpdateAsyncTask;
 import me.jwenzel.habittracker.dialogs.MasterDialoger;
 import me.jwenzel.habittracker.summary.presenters.DailyHabitSummaryPresenter;
 import me.jwenzel.habittracker.summary.presenters.DailyHabitSummaryPresenterImpl;
@@ -29,6 +32,14 @@ import me.jwenzel.habittracker.utilities.DaysOfWeekEnumTypeConverter;
 import me.jwenzel.habittracker.BaseMvpFragment;
 
 public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSummaryView, DailyHabitSummaryPresenter> implements DailyHabitSummaryView {
+
+    private static final String PRIMARY_KEY = "primary_key";
+    private static final String NAME_KEY = "name";
+    private static final String DESC_KEY = "desc";
+    private static final String REMINDER_KEY = "hasReminder";
+    private static final String ACTIVE_DAYS_KEY = "active_days";
+    private static final String REMINDER_DAYS_KEY = "reminder_days";
+    private static final String DIFFICULTY_KEY = "difficulty";
 
     // TODO: We need to rename these
     private EditText mNameInput;
@@ -41,6 +52,27 @@ public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSumm
     private SimpleTime mReminderTime;
     private ArrayList<DayOfWeekEnum> mActiveDays = new ArrayList<>();
     private DifficultyEnum mDifficulty;
+
+    private int mPrimaryKey;
+
+    private boolean mIsExistingHabit;
+
+    public static DailyHabitSummaryMvpFragment newInstance(DailyHabit habit) {
+        DailyHabitSummaryMvpFragment fragment = new DailyHabitSummaryMvpFragment();
+
+        Bundle args = new Bundle();
+        args.putInt(PRIMARY_KEY, habit.getPrimaryKey());
+        args.putString(NAME_KEY, habit.getName());
+        args.putString(DESC_KEY, habit.getDescription());
+        args.putBoolean(REMINDER_KEY, habit.isUsingReminders());
+        args.putInt(ACTIVE_DAYS_KEY,DaysOfWeekEnumTypeConverter.fromList(habit.getActiveDays()));
+        args.putInt(REMINDER_DAYS_KEY, DaysOfWeekEnumTypeConverter.fromList(habit.getActiveDays()));
+        args.putInt(DIFFICULTY_KEY, habit.getDifficulty().getValue());
+
+        fragment.setArguments(args);
+
+        return fragment;
+    }
 
     /**
      * Creates the presenter object and returns it. This method used when the
@@ -63,6 +95,16 @@ public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSumm
         mSaveButton = view.findViewById(R.id.btn_daily_habit_save);
         mDaysActive = view.findViewById(R.id.tv_daily_habit_active_desc);
         mDays = view.findViewById(R.id.tv_daily_habit_active_days);
+
+        if (getArguments() != null) {
+            Bundle args = getArguments();
+            mPrimaryKey = args.getInt(PRIMARY_KEY);
+            mNameInput.setText(args.getString(NAME_KEY));
+            mDescInput.setText(args.getString(DESC_KEY));
+            mReminderCheckbox.setChecked(args.getBoolean(REMINDER_KEY));
+
+            mIsExistingHabit = true;
+        }
 
         mDaysActive.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,7 +163,14 @@ public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSumm
 
         DailyHabit habit = new DailyHabit(name, desc, hasReminders, mActiveDays, mReminderTime, mDifficulty, null);
 
-        new DailyHabitInsertAsyncTask(DatabaseManager.getInstance(DailyHabitSummaryMvpFragment.this.getContext())).execute(habit);
+        DatabaseManager manager = DatabaseManager.getInstance(DailyHabitSummaryMvpFragment.this.getContext());
+        if (mIsExistingHabit) {
+            habit.setPrimaryKey(mPrimaryKey);
+            new HabitUpdateAsyncTask(manager).execute(habit);
+        }
+        else {
+            new DailyHabitInsertAsyncTask(manager).execute(habit);
+        }
         finishFragment();
     }
 }

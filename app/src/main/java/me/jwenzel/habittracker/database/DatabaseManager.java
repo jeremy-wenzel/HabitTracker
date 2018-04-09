@@ -42,4 +42,12 @@ public class DatabaseManager {
     public List<RegularHabit> getRegularHabits() {
         return mDb.habitDao().getAllRegularHabits();
     }
+
+    public void update(DailyHabit dailyHabit) {
+        mDb.habitDao().updateAll(dailyHabit);
+    }
+
+    public void update(RegularHabit regularHabit) {
+        mDb.habitDao().updateAll(regularHabit);
+    }
 }

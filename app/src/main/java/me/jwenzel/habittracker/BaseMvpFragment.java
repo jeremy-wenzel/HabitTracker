@@ -50,14 +50,17 @@ public abstract class BaseMvpFragment<V extends BaseView, P extends BasePresente
      * @param addToBackStack Should the fragment transaction be added to the backstack?
      */
     public void startNewFragment(Fragment fragment, boolean addToBackStack) {
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction().replace(R.id.main_activity_fragment_container, fragment);
+        // SupportFragmentManager might be null if the activity is not started. So make sure the activity is not null
+        if (getActivity() != null) {
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction().replace(R.id.main_activity_fragment_container, fragment);
 
-        if (addToBackStack) {
-            transaction.addToBackStack(null);
+            if (addToBackStack) {
+                transaction.addToBackStack(null);
+            }
+
+            transaction.commit();
         }
-
-        transaction.commit();
     }
 
     public void finishFragment() {

@@ -7,7 +7,9 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,7 @@ import me.jwenzel.habittracker.business_objects.DailyHabit;
 import me.jwenzel.habittracker.dashboard.presenters.DailyHabitDashboardPresenter;
 import me.jwenzel.habittracker.dashboard.presenters.DailyHabitDashboardPresenterImpl;
 import me.jwenzel.habittracker.BaseMvpFragment;
+import me.jwenzel.habittracker.summary.views.DailyHabitSummaryMvpFragment;
 
 public class DailyHabitDashboardMvpFragment extends BaseMvpFragment<DailyHabitDashboardView, DailyHabitDashboardPresenter>
         implements DailyHabitDashboardView {
@@ -72,6 +75,20 @@ public class DailyHabitDashboardMvpFragment extends BaseMvpFragment<DailyHabitDa
     public void updateDailyHabitList(List<DailyHabit> dailyHabits) {
         mAdapter = new DailyHabitAdapter(getContext(), dailyHabits);
         mListView.setAdapter(mAdapter);
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(DailyHabitDashboardMvpFragment.this.getContext(), "Testy", Toast.LENGTH_LONG).show();
+                DailyHabit habit = (DailyHabit) adapterView.getItemAtPosition(i);
+
+                DailyHabitSummaryMvpFragment fragment = DailyHabitSummaryMvpFragment.newInstance(habit);
+
+                // Set the fragment using the manager and commit it
+                DailyHabitDashboardMvpFragment.this.startNewFragment(fragment, true);
+
+                return true;
+            }
+        });
     }
 
     private class SelectDailyHabitAsyncTask extends AsyncTask<Void, Void, List<DailyHabit>> {
