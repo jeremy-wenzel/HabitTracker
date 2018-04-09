@@ -3,6 +3,9 @@ package me.jwenzel.habittracker.summary.views;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -87,6 +90,7 @@ public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSumm
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_daily_habit_summary, container, false);
 
         mNameInput = view.findViewById(R.id.et_daily_habit_name);
@@ -130,6 +134,22 @@ public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSumm
             }
         });
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_habit_summary, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_delete:
+                getPresenter().deleteButtonClicked();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
