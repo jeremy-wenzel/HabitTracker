@@ -1,6 +1,5 @@
 package me.jwenzel.habittracker.summary.views;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -16,13 +15,13 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.jwenzel.habittracker.dashboard.views.DailyHabitDashboardMvpFragment;
 import me.jwenzel.habittracker.database.async_tasks.DailyHabitInsertAsyncTask;
 import me.jwenzel.habittracker.database.DatabaseManager;
 import me.jwenzel.habittracker.R;
 import me.jwenzel.habittracker.business_objects.DailyHabit;
 import me.jwenzel.habittracker.business_objects.DifficultyEnum;
 import me.jwenzel.habittracker.business_objects.SimpleTime;
+import me.jwenzel.habittracker.database.async_tasks.HabitDeleteAsyncTask;
 import me.jwenzel.habittracker.database.async_tasks.HabitUpdateAsyncTask;
 import me.jwenzel.habittracker.dialogs.MasterDialoger;
 import me.jwenzel.habittracker.summary.presenters.DailyHabitSummaryPresenter;
@@ -48,6 +47,7 @@ public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSumm
     private TextView mDays;
     private CheckBox mReminderCheckbox;
     private Button mSaveButton;
+    private Button mDeleteButton;
 
     private SimpleTime mReminderTime;
     private ArrayList<DayOfWeekEnum> mActiveDays = new ArrayList<>();
@@ -95,6 +95,7 @@ public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSumm
         mSaveButton = view.findViewById(R.id.btn_daily_habit_save);
         mDaysActive = view.findViewById(R.id.tv_daily_habit_active_desc);
         mDays = view.findViewById(R.id.tv_daily_habit_active_days);
+        mDeleteButton = view.findViewById(R.id.btn_daily_habit_delete);
 
         if (getArguments() != null) {
             Bundle args = getArguments();
@@ -118,6 +119,14 @@ public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSumm
             @Override
             public void onClick(View v) {
                 getPresenter().saveButtonClicked();
+            }
+        });
+
+        mDeleteButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                getPresenter().deleteButtonClicked();
             }
         });
         return view;
@@ -171,6 +180,23 @@ public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSumm
         else {
             new DailyHabitInsertAsyncTask(manager).execute(habit);
         }
+        finishFragment();
+    }
+
+    @Override
+    public void deleteHabit() {
+        String name = mNameInput.getText().toString();
+        String desc = mDescInput.getText().toString();
+        boolean hasReminders = mReminderCheckbox.isChecked();
+        mReminderTime = new SimpleTime(0, 0);
+        mDifficulty = DifficultyEnum.EASY;
+
+        DailyHabit habit = new DailyHabit(name, desc, hasReminders, mActiveDays, mReminderTime, mDifficulty, null);
+        habit.setPrimaryKey(mPrimaryKey);
+
+        DatabaseManager manager = DatabaseManager.getInstance(DailyHabitSummaryMvpFragment.this.getContext());
+        new HabitDeleteAsyncTask(manager).execute(habit);
+
         finishFragment();
     }
 }

@@ -7,4 +7,6 @@ public interface DailyHabitSummaryPresenter extends BasePresenter {
     void daysActiveClicked();
 
     void saveButtonClicked();
+
+    void deleteButtonClicked();
 }

@@ -7,4 +7,6 @@ public interface DailyHabitSummaryView extends BaseView {
     void displayDaysOfWeekDialog();
 
     void saveHabit();
+
+    void deleteHabit();
 }

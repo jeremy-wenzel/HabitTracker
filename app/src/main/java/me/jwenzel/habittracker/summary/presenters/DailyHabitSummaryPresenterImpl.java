@@ -23,4 +23,9 @@ public class DailyHabitSummaryPresenterImpl extends BasePresenterImpl<DailyHabit
     public void saveButtonClicked() {
         getView().saveHabit();
     }
+
+    @Override
+    public void deleteButtonClicked() {
+        getView().deleteHabit();
+    }
 }

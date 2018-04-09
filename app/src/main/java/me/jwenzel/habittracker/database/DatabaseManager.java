@@ -5,6 +5,7 @@ import android.content.Context;
 
 import java.util.List;
 
+import me.jwenzel.habittracker.business_objects.BaseHabit;
 import me.jwenzel.habittracker.business_objects.DailyHabit;
 import me.jwenzel.habittracker.business_objects.RegularHabit;
 
@@ -49,5 +50,14 @@ public class DatabaseManager {
 
     public void update(RegularHabit regularHabit) {
         mDb.habitDao().updateAll(regularHabit);
+    }
+
+    public void delete(BaseHabit habit) {
+        if (habit instanceof RegularHabit) {
+            mDb.habitDao().deleteAll((RegularHabit) habit);
+        }
+        else if (habit instanceof DailyHabit){
+            mDb.habitDao().deleteAll((DailyHabit) habit);
+        }
     }
 }
