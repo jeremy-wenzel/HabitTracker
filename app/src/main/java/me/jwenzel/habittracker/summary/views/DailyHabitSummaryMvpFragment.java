@@ -18,6 +18,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.jwenzel.habittracker.database.async_tasks.DailyHabitInsertAsyncTask;
 import me.jwenzel.habittracker.database.DatabaseManager;
 import me.jwenzel.habittracker.R;
@@ -43,14 +45,12 @@ public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSumm
     private static final String REMINDER_DAYS_KEY = "reminder_days";
     private static final String DIFFICULTY_KEY = "difficulty";
 
-    // TODO: We need to rename these
-    private EditText mNameInput;
-    private EditText mDescInput;
-    private TextView mDaysActive;
-    private TextView mDays;
-    private CheckBox mReminderCheckbox;
-    private Button mSaveButton;
-    private Button mDeleteButton;
+    @BindView(R.id.et_daily_habit_name) protected EditText mNameInput;
+    @BindView(R.id.et_daily_habit_desc) protected EditText mDescInput;
+    @BindView(R.id.tv_daily_habit_active_desc) protected TextView mDaysActive;
+    @BindView(R.id.tv_daily_habit_active_days) protected TextView mDays;
+    @BindView(R.id.cb_daily_habit_reminder) protected CheckBox mReminderCheckbox;
+    @BindView(R.id.btn_daily_habit_save) protected Button mSaveButton;
 
     private SimpleTime mReminderTime;
     private ArrayList<DayOfWeekEnum> mActiveDays = new ArrayList<>();
@@ -93,13 +93,7 @@ public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSumm
         setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_daily_habit_summary, container, false);
 
-        mNameInput = view.findViewById(R.id.et_daily_habit_name);
-        mDescInput = view.findViewById(R.id.et_daily_habit_desc);
-        mReminderCheckbox = view.findViewById(R.id.cb_daily_habit_reminder);
-        mSaveButton = view.findViewById(R.id.btn_daily_habit_save);
-        mDaysActive = view.findViewById(R.id.tv_daily_habit_active_desc);
-        mDays = view.findViewById(R.id.tv_daily_habit_active_days);
-        mDeleteButton = view.findViewById(R.id.btn_daily_habit_delete);
+        ButterKnife.bind(this, view);
 
         if (getArguments() != null) {
             Bundle args = getArguments();
@@ -126,13 +120,6 @@ public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSumm
             }
         });
 
-        mDeleteButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                getPresenter().deleteButtonClicked();
-            }
-        });
         return view;
     }
 
