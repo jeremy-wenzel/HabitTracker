@@ -3,9 +3,6 @@ package me.jwenzel.habittracker.summary.views;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -20,7 +17,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import me.jwenzel.habittracker.database.async_tasks.DailyHabitInsertAsyncTask;
+import me.jwenzel.habittracker.database.async_tasks.HabitInsertAsyncTask;
 import me.jwenzel.habittracker.database.DatabaseManager;
 import me.jwenzel.habittracker.R;
 import me.jwenzel.habittracker.business_objects.DailyHabit;
@@ -33,7 +30,6 @@ import me.jwenzel.habittracker.summary.presenters.DailyHabitSummaryPresenter;
 import me.jwenzel.habittracker.summary.presenters.DailyHabitSummaryPresenterImpl;
 import me.jwenzel.habittracker.utilities.DayOfWeekEnum;
 import me.jwenzel.habittracker.utilities.DaysOfWeekEnumTypeConverter;
-import me.jwenzel.habittracker.BaseMvpFragment;
 
 public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<DailyHabitSummaryView, DailyHabitSummaryPresenter> implements DailyHabitSummaryView {
 
@@ -57,8 +53,6 @@ public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<Da
     private DifficultyEnum mDifficulty;
 
     private int mPrimaryKey;
-
-    private boolean mIsExistingHabit;
 
     public static DailyHabitSummaryMvpFragment newInstance(DailyHabit habit) {
         DailyHabitSummaryMvpFragment fragment = new DailyHabitSummaryMvpFragment();
@@ -102,7 +96,7 @@ public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<Da
             mDescInput.setText(args.getString(DESC_KEY));
             mReminderCheckbox.setChecked(args.getBoolean(REMINDER_KEY));
 
-            mIsExistingHabit = true;
+            setIsExistingHabit(true);
         }
 
         mDaysActive.setOnClickListener(new View.OnClickListener() {
@@ -164,12 +158,12 @@ public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<Da
         DailyHabit habit = new DailyHabit(name, desc, hasReminders, mActiveDays, mReminderTime, mDifficulty, null);
 
         DatabaseManager manager = DatabaseManager.getInstance(DailyHabitSummaryMvpFragment.this.getContext());
-        if (mIsExistingHabit) {
+        if (isExistingHabit()) {
             habit.setPrimaryKey(mPrimaryKey);
             new HabitUpdateAsyncTask(manager).execute(habit);
         }
         else {
-            new DailyHabitInsertAsyncTask(manager).execute(habit);
+            new HabitInsertAsyncTask(manager).execute(habit);
         }
         finishFragment();
     }

@@ -8,11 +8,11 @@ import me.jwenzel.habittracker.business_objects.RegularHabit;
 import me.jwenzel.habittracker.database.DatabaseManager;
 
 
-public class DailyHabitInsertAsyncTask extends AsyncTask<BaseHabit, Void, Boolean> {
+public class HabitInsertAsyncTask extends AsyncTask<BaseHabit, Void, Boolean> {
 
     private DatabaseManager mDatabaseManager;
 
-    public DailyHabitInsertAsyncTask(DatabaseManager databaseManager) {
+    public HabitInsertAsyncTask(DatabaseManager databaseManager) {
         mDatabaseManager = databaseManager;
     }
 

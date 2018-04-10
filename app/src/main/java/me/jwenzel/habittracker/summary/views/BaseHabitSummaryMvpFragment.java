@@ -10,7 +10,7 @@ import me.jwenzel.habittracker.summary.presenters.BaseHabitSummaryPresenter;
 
 public abstract class BaseHabitSummaryMvpFragment<V extends BaseHabitSummaryView, P extends BaseHabitSummaryPresenter>
         extends BaseMvpFragment<V, P> implements BaseHabitSummaryView {
-    private boolean mIsExistingHabit;
+    private boolean mIsExistingHabit = false;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

@@ -7,7 +7,9 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -20,6 +22,7 @@ import me.jwenzel.habittracker.business_objects.RegularHabit;
 import me.jwenzel.habittracker.dashboard.presenters.RegularHabitDashboardPresenter;
 import me.jwenzel.habittracker.dashboard.presenters.RegularHabitDashboardPresenterImpl;
 import me.jwenzel.habittracker.BaseMvpFragment;
+import me.jwenzel.habittracker.summary.views.RegularHabitSummaryMvpFragment;
 
 
 public class RegularHabitDashboardMvpFragment extends BaseMvpFragment<RegularHabitDashboardView, RegularHabitDashboardPresenter> implements RegularHabitDashboardView {
@@ -62,6 +65,17 @@ public class RegularHabitDashboardMvpFragment extends BaseMvpFragment<RegularHab
     public void updateListViewUi(List<RegularHabit> habitList) {
         mAdapter = new RegularHabitAdapter(getContext(), habitList);
         mListView.setAdapter(mAdapter);
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(RegularHabitDashboardMvpFragment.this.getContext(), "Regular", Toast.LENGTH_LONG).show();
+
+                RegularHabit habit = (RegularHabit) adapterView.getItemAtPosition(i);
+                RegularHabitSummaryMvpFragment fragment = RegularHabitSummaryMvpFragment.getInstance(habit);
+                RegularHabitDashboardMvpFragment.this.startNewFragment(fragment, true);
+                return true;
+            }
+        });
     }
 
     private class SelectRegularHabitAsyncTask extends AsyncTask<Void, Void, List<RegularHabit>> {
