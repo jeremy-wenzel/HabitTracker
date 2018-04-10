@@ -1,12 +1,5 @@
 package me.jwenzel.habittracker.summary.views;
 
-import me.jwenzel.habittracker.BaseView;
-
-public interface DailyHabitSummaryView extends BaseView {
-
+public interface DailyHabitSummaryView extends BaseHabitSummaryView {
     void displayDaysOfWeekDialog();
-
-    void saveHabit();
-
-    void deleteHabit();
 }

@@ -1,9 +1,8 @@
 package me.jwenzel.habittracker.summary.presenters;
 
-import me.jwenzel.habittracker.BasePresenterImpl;
 import me.jwenzel.habittracker.summary.views.DailyHabitSummaryView;
 
-public class DailyHabitSummaryPresenterImpl extends BasePresenterImpl<DailyHabitSummaryView> implements DailyHabitSummaryPresenter {
+public class DailyHabitSummaryPresenterImpl extends BaseHabitSummaryPresenterImpl<DailyHabitSummaryView> implements DailyHabitSummaryPresenter {
     /**
      * Creates the BasePresenter and sets the view for the rest of the presenter classes
      * to access
@@ -17,15 +16,5 @@ public class DailyHabitSummaryPresenterImpl extends BasePresenterImpl<DailyHabit
     @Override
     public void daysActiveClicked() {
         getView().displayDaysOfWeekDialog();
-    }
-
-    @Override
-    public void saveButtonClicked() {
-        getView().saveHabit();
-    }
-
-    @Override
-    public void deleteButtonClicked() {
-        getView().deleteHabit();
     }
 }

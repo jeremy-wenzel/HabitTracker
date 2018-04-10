@@ -35,7 +35,7 @@ import me.jwenzel.habittracker.utilities.DayOfWeekEnum;
 import me.jwenzel.habittracker.utilities.DaysOfWeekEnumTypeConverter;
 import me.jwenzel.habittracker.BaseMvpFragment;
 
-public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSummaryView, DailyHabitSummaryPresenter> implements DailyHabitSummaryView {
+public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<DailyHabitSummaryView, DailyHabitSummaryPresenter> implements DailyHabitSummaryView {
 
     private static final String PRIMARY_KEY = "primary_key";
     private static final String NAME_KEY = "name";
@@ -121,26 +121,6 @@ public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSumm
         });
 
         return view;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_habit_summary, menu);
-
-        MenuItem delete = menu.findItem(R.id.action_delete);
-        delete.setVisible(mIsExistingHabit);
-
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_delete:
-                getPresenter().deleteButtonClicked();
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     @Override

@@ -24,7 +24,7 @@ import me.jwenzel.habittracker.summary.presenters.RegularHabitSummaryPresenterIm
 import me.jwenzel.habittracker.utilities.DayOfWeekEnum;
 import me.jwenzel.habittracker.BaseMvpFragment;
 
-public class RegularHabitSummaryMvpFragment extends BaseMvpFragment<RegularHabitSummaryView, RegularHabitSummaryPresenter>
+public class RegularHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<RegularHabitSummaryView, RegularHabitSummaryPresenter>
         implements RegularHabitSummaryView {
 
     @BindView(R.id.et_regular_habit_title) protected EditText mHabitTitle;
@@ -65,5 +65,10 @@ public class RegularHabitSummaryMvpFragment extends BaseMvpFragment<RegularHabit
 
         new DailyHabitInsertAsyncTask(dbManager).execute(habit);
         finishFragment();
+    }
+
+    @Override
+    public void deleteHabit() {
+
     }
 }
