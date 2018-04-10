@@ -139,6 +139,10 @@ public class DailyHabitSummaryMvpFragment extends BaseMvpFragment<DailyHabitSumm
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_habit_summary, menu);
+
+        MenuItem delete = menu.findItem(R.id.action_delete);
+        delete.setVisible(mIsExistingHabit);
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
