@@ -1,7 +1,12 @@
 package me.jwenzel.habittracker.summary.views;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +35,8 @@ import me.jwenzel.habittracker.summary.presenters.DailyHabitSummaryPresenter;
 import me.jwenzel.habittracker.summary.presenters.DailyHabitSummaryPresenterImpl;
 import me.jwenzel.habittracker.utilities.DayOfWeekEnum;
 import me.jwenzel.habittracker.utilities.DaysOfWeekEnumTypeConverter;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<DailyHabitSummaryView, DailyHabitSummaryPresenter> implements DailyHabitSummaryView {
 
@@ -164,6 +171,7 @@ public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<Da
         }
         else {
             new HabitInsertAsyncTask(manager).execute(habit);
+            buildNotification();
         }
         finishFragment();
     }
@@ -183,5 +191,30 @@ public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<Da
         new HabitDeleteAsyncTask(manager).execute(habit);
 
         finishFragment();
+    }
+
+    public void buildNotification() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create the NotificationChannel
+            CharSequence name = "TestChannel";
+            String description = "TestDescription";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel mChannel = new NotificationChannel("ChannelID", name, importance);
+            mChannel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = (NotificationManager) this.getContext().getSystemService(
+                    NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(mChannel);
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this.getContext(), "ChannelID")
+                .setSmallIcon(R.drawable.ic_add_box_black)
+                .setContentTitle("Test Title")
+                .setContentText("Test Content")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManagerCompat manager = NotificationManagerCompat.from(this.getContext());
+        manager.notify(1, builder.build());
     }
 }
