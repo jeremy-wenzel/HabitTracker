@@ -29,6 +29,9 @@ public interface HabitDao {
     @Query("SELECT * FROM dailyhabit")
     List<DailyHabit> getAllDailyHabits();
 
+    @Query("SELECT * FROM dailyhabit WHERE primaryKey = :id LIMIT 1")
+    DailyHabit getDailyHabit(int id);
+
     // Insert Regular Habits
     @Insert
     void insertAll(RegularHabit... regularHabits);

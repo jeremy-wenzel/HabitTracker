@@ -14,10 +14,11 @@ public class DatabaseManager {
     private final String DATABASE_NAME = "habit.db";
 
     private static DatabaseManager mInstance;
-    private HabitDatabase mDb;
+    private HabitDao mDao;
 
     private DatabaseManager(Context applicationContext) {
-        mDb = Room.databaseBuilder(applicationContext, HabitDatabase.class, DATABASE_NAME).build();
+        HabitDatabase mDb = Room.databaseBuilder(applicationContext, HabitDatabase.class, DATABASE_NAME).build();
+        mDao = mDb.habitDao();
     }
 
     public static DatabaseManager getInstance(Context applicationContext) {
@@ -29,35 +30,39 @@ public class DatabaseManager {
     }
 
     public void insert(DailyHabit dailyHabit) {
-        mDb.habitDao().insertAll(dailyHabit);
+        mDao.insertAll(dailyHabit);
     }
 
     public void insert(RegularHabit regularHabit) {
-        mDb.habitDao().insertAll(regularHabit);
+        mDao.insertAll(regularHabit);
     }
 
     public List<DailyHabit> getDailyHabits() {
-        return mDb.habitDao().getAllDailyHabits();
+        return mDao.getAllDailyHabits();
+    }
+
+    public DailyHabit getDailyHabit(int id) {
+        return mDao.getDailyHabit(id);
     }
 
     public List<RegularHabit> getRegularHabits() {
-        return mDb.habitDao().getAllRegularHabits();
+        return mDao.getAllRegularHabits();
     }
 
     public void update(DailyHabit dailyHabit) {
-        mDb.habitDao().updateAll(dailyHabit);
+        mDao.updateAll(dailyHabit);
     }
 
     public void update(RegularHabit regularHabit) {
-        mDb.habitDao().updateAll(regularHabit);
+        mDao.updateAll(regularHabit);
     }
 
     public void delete(BaseHabit habit) {
         if (habit instanceof RegularHabit) {
-            mDb.habitDao().deleteAll((RegularHabit) habit);
+            mDao.deleteAll((RegularHabit) habit);
         }
         else if (habit instanceof DailyHabit){
-            mDb.habitDao().deleteAll((DailyHabit) habit);
+            mDao.deleteAll((DailyHabit) habit);
         }
     }
 }
