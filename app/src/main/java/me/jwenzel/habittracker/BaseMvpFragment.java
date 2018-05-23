@@ -66,4 +66,8 @@ public abstract class BaseMvpFragment<V extends BaseView, P extends BasePresente
     public void finishFragment() {
         getFragmentManager().popBackStack();
     }
+
+    public HabitTrackerApplication getApplication() {
+        return (HabitTrackerApplication) getContext().getApplicationContext();
+    }
 }
