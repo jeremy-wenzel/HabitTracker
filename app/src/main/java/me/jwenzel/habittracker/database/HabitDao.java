@@ -47,4 +47,7 @@ public interface HabitDao {
     // Get All regular Habits
     @Query("SELECT * FROM regularhabit")
     List<RegularHabit> getAllRegularHabits();
+
+    @Query("SELECT * FROM regularhabit WHERE primaryKey = :id LIMIT 1")
+    RegularHabit getRegularHabit(int id);
 }

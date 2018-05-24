@@ -1,6 +1,8 @@
 package me.jwenzel.habittracker.summary.views;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.jwenzel.habittracker.NotificationHelper;
+import me.jwenzel.habittracker.business_objects.BaseHabit;
 import me.jwenzel.habittracker.database.async_tasks.HabitInsertAsyncTask;
 import me.jwenzel.habittracker.database.DatabaseManager;
 import me.jwenzel.habittracker.R;
@@ -36,12 +39,6 @@ import me.jwenzel.habittracker.utilities.DaysOfWeekEnumTypeConverter;
 public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<DailyHabitSummaryView, DailyHabitSummaryPresenter> implements DailyHabitSummaryView {
 
     private static final String PRIMARY_KEY = "primary_key";
-    private static final String NAME_KEY = "name";
-    private static final String DESC_KEY = "desc";
-    private static final String REMINDER_KEY = "hasReminder";
-    private static final String ACTIVE_DAYS_KEY = "active_days";
-    private static final String REMINDER_DAYS_KEY = "reminder_days";
-    private static final String DIFFICULTY_KEY = "difficulty";
 
     @BindView(R.id.et_daily_habit_name) protected EditText mNameInput;
     @BindView(R.id.et_daily_habit_desc) protected EditText mDescInput;
@@ -61,13 +58,6 @@ public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<Da
 
         Bundle args = new Bundle();
         args.putInt(PRIMARY_KEY, habit.getPrimaryKey());
-        args.putString(NAME_KEY, habit.getName());
-        args.putString(DESC_KEY, habit.getDescription());
-        args.putBoolean(REMINDER_KEY, habit.isUsingReminders());
-        args.putInt(ACTIVE_DAYS_KEY,DaysOfWeekEnumTypeConverter.fromList(habit.getActiveDays()));
-        args.putInt(REMINDER_DAYS_KEY, DaysOfWeekEnumTypeConverter.fromList(habit.getActiveDays()));
-        args.putInt(DIFFICULTY_KEY, habit.getDifficulty().getValue());
-
         fragment.setArguments(args);
 
         return fragment;
@@ -94,10 +84,6 @@ public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<Da
         if (getArguments() != null) {
             Bundle args = getArguments();
             mPrimaryKey = args.getInt(PRIMARY_KEY);
-            mNameInput.setText(args.getString(NAME_KEY));
-            mDescInput.setText(args.getString(DESC_KEY));
-            mReminderCheckbox.setChecked(args.getBoolean(REMINDER_KEY));
-
             setIsExistingHabit(true);
         }
 
@@ -117,6 +103,14 @@ public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<Da
         });
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (isExistingHabit()) {
+            getPresenter().onStart(mPrimaryKey);
+        }
     }
 
     @Override
@@ -187,5 +181,32 @@ public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<Da
         new HabitDeleteAsyncTask(manager).execute(habit);
 
         finishFragment();
+    }
+
+    @Override
+    public void loadHabit(int habitId) {
+        new SelectHabitAsyncTask().execute(habitId);
+    }
+
+    @Override
+    public void displayHabit(BaseHabit habit) {
+        mNameInput.setText(habit.getName());
+        mDescInput.setText(habit.getDescription());
+        mReminderCheckbox.setChecked(habit.isUsingReminders());
+    }
+
+    private class SelectHabitAsyncTask extends AsyncTask<Integer, Void, BaseHabit> {
+
+        @Override
+        protected BaseHabit doInBackground(Integer... ints) {
+            DatabaseManager manager = getApplication().getDatabaseManager();
+            DailyHabit habit = manager.getDailyHabit(ints[0]);
+            return habit;
+        }
+
+        @Override
+        protected void onPostExecute(BaseHabit habit) {
+            getPresenter().onHabitLoaded(habit);
+        }
     }
 }

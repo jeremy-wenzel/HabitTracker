@@ -49,6 +49,10 @@ public class DatabaseManager {
         return mDao.getAllRegularHabits();
     }
 
+    public RegularHabit getRegularHabit(int id) {
+        return mDao.getRegularHabit(id);
+    }
+
     public void update(DailyHabit dailyHabit) {
         mDao.updateAll(dailyHabit);
     }

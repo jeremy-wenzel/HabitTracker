@@ -1,5 +1,6 @@
 package me.jwenzel.habittracker.summary.views;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.jwenzel.habittracker.business_objects.BaseHabit;
 import me.jwenzel.habittracker.database.async_tasks.HabitInsertAsyncTask;
 import me.jwenzel.habittracker.database.DatabaseManager;
 import me.jwenzel.habittracker.R;
@@ -41,8 +43,6 @@ public class RegularHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<
         Bundle args = new Bundle();
 
         args.putInt(PRIMARY_KEY, habit.getPrimaryKey());
-        args.putString(NAME_KEY, habit.getName());
-        args.putString(DESC_KEY, habit.getDescription());
 
         RegularHabitSummaryMvpFragment fragment = new RegularHabitSummaryMvpFragment();
         fragment.setArguments(args);
@@ -64,11 +64,7 @@ public class RegularHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<
 
         Bundle args = getArguments();
         if (args != null) {
-            mHabitTitle.setText(args.getString(NAME_KEY));
-            mHabitDesc.setText(args.getString(DESC_KEY));
-
             mPrimaryKey = args.getInt(PRIMARY_KEY);
-
             setIsExistingHabit(true);
         }
 
@@ -79,6 +75,14 @@ public class RegularHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<
             }
         });
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (isExistingHabit()) {
+            getPresenter().onStart(mPrimaryKey);
+        }
     }
 
     @Override
@@ -118,5 +122,31 @@ public class RegularHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<
 
         new HabitDeleteAsyncTask(dbManager).execute(habit);
         finishFragment();
+    }
+
+    @Override
+    public void loadHabit(int habitId) {
+        new SelectHabitAsyncTask().execute(habitId);
+    }
+
+    @Override
+    public void displayHabit(BaseHabit habit) {
+        mHabitTitle.setText(habit.getName());
+        mHabitDesc.setText(habit.getDescription());
+    }
+
+    private class SelectHabitAsyncTask extends AsyncTask<Integer, Void, BaseHabit> {
+
+        @Override
+        protected BaseHabit doInBackground(Integer... ints) {
+            DatabaseManager manager = getApplication().getDatabaseManager();
+            RegularHabit habit = manager.getRegularHabit(ints[0]);
+            return habit;
+        }
+
+        @Override
+        protected void onPostExecute(BaseHabit habit) {
+            getPresenter().onHabitLoaded(habit);
+        }
     }
 }
