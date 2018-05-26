@@ -1,9 +1,13 @@
 package me.jwenzel.habittracker.summary.views;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
+import android.support.v4.app.AlarmManagerCompat;
 import android.support.v4.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +20,13 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.jwenzel.habittracker.NotificationHelper;
+import me.jwenzel.habittracker.broadcast_receivers.NotificationReceiver;
 import me.jwenzel.habittracker.business_objects.BaseHabit;
 import me.jwenzel.habittracker.database.async_tasks.HabitInsertAsyncTask;
 import me.jwenzel.habittracker.database.DatabaseManager;
@@ -31,6 +37,7 @@ import me.jwenzel.habittracker.business_objects.SimpleTime;
 import me.jwenzel.habittracker.database.async_tasks.HabitDeleteAsyncTask;
 import me.jwenzel.habittracker.database.async_tasks.HabitUpdateAsyncTask;
 import me.jwenzel.habittracker.dialogs.MasterDialoger;
+import me.jwenzel.habittracker.services.ReminderNotificationService;
 import me.jwenzel.habittracker.summary.presenters.DailyHabitSummaryPresenter;
 import me.jwenzel.habittracker.summary.presenters.DailyHabitSummaryPresenterImpl;
 import me.jwenzel.habittracker.utilities.DayOfWeekEnum;
@@ -163,6 +170,15 @@ public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<Da
             NotificationHelper helper = getApplication().getNotificationHelper();
             helper.notify(1, helper.showHabitNotification(habit));
         }
+
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(getActivity().ALARM_SERVICE);
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.SECOND, 10);
+        Intent service = new Intent(getContext(), NotificationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 1, service, PendingIntent.FLAG_ONE_SHOT);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
         finishFragment();
     }
 

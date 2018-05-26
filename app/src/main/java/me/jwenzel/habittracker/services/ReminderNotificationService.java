@@ -28,6 +28,6 @@ public class ReminderNotificationService extends IntentService {
         int id = intent.getIntExtra(HABIT_KEY, -1);
         DatabaseManager manager = DatabaseManager.getInstance(this);
         DailyHabit habit = manager.getDailyHabit(id);
-        new NotificationCompat.Builder(this, "test");
+        new NotificationCompat.Builder(this, "" + id);
     }
 }
