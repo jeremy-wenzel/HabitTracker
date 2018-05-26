@@ -25,6 +25,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.jwenzel.habittracker.HabitTrackerApplication;
 import me.jwenzel.habittracker.NotificationHelper;
 import me.jwenzel.habittracker.broadcast_receivers.NotificationReceiver;
 import me.jwenzel.habittracker.business_objects.BaseHabit;
@@ -169,13 +170,10 @@ public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<Da
             new HabitInsertAsyncTask(manager).execute(habit);
         }
 
-        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(getActivity().ALARM_SERVICE);
+        NotificationHelper helper = getApplication().getNotificationHelper();
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.SECOND, 10);
-        Intent service = new Intent(getContext(), NotificationReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 1, service, PendingIntent.FLAG_ONE_SHOT);
-
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        helper.setNotificationReminder(calendar, habit);
 
         finishFragment();
     }
