@@ -34,24 +34,41 @@ public class NotificationHelper extends ContextWrapper {
         mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
     }
 
-    public NotificationCompat.Builder showHabitNotification(BaseHabit habit) {
+    /**
+     * Builds the notification using the habit information
+     * @param habit The habit to display
+     * @return A notification builder that can be used to display to the user
+     */
+    public NotificationCompat.Builder buildHabitNotification(BaseHabit habit) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_add_box_black)
-                .setContentTitle("TestTitle")
-                .setContentText("TestContent");
+                .setContentTitle(habit.getName())
+                .setContentText(habit.getDescription());
 
         return builder;
     }
 
+    /**
+     * Displays the notification to the user
+     * @param id Id of the notification. (probably needs to be unique?)
+     * @param builder Notification builder
+     */
     public void notify(int id, NotificationCompat.Builder builder) {
         NotificationManagerCompat manager = NotificationManagerCompat.from(this);
         manager.notify(id, builder.build());
     }
 
+    /**
+     * Sets a notification reminder in the AlarmManager to notify the user about a habit
+     *
+     * TODO: Can remove the time parameter because the value should be inside of the habit
+     * @param time
+     * @param habit
+     */
     public void setNotificationReminder(Calendar time, BaseHabit habit) {
-        // TODO: Check if there exists an alarm already for this habit, and remove it if necessary
         Intent intent = new Intent(this, NotificationReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, habit.getPrimaryKey(), intent, PendingIntent.FLAG_ONE_SHOT);
+        mAlarmManager.cancel(pendingIntent);
         mAlarmManager.set(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), pendingIntent);
     }
 }

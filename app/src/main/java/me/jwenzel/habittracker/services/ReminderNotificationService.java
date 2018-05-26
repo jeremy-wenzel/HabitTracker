@@ -1,12 +1,9 @@
 package me.jwenzel.habittracker.services;
 
 import android.app.IntentService;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import me.jwenzel.habittracker.HabitTrackerApplication;
@@ -37,6 +34,6 @@ public class ReminderNotificationService extends IntentService {
         DailyHabit habit = manager.getDailyHabit(id);
         HabitTrackerApplication app = (HabitTrackerApplication) getApplication();
         NotificationHelper notificationHelper = app.getNotificationHelper();
-        notificationHelper.notify(2, notificationHelper.showHabitNotification(habit));
+        notificationHelper.notify(2, notificationHelper.buildHabitNotification(habit));
     }
 }
