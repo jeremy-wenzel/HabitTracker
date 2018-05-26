@@ -23,6 +23,9 @@
         <receiver
             android:name=".broadcast_receivers.NotificationReceiver"
             android:process=":remote"/>
+        <service
+            android:name=".services.ReminderNotificationService"
+            android:exported="false"/>
     </application>
 
 </manifest>

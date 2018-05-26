@@ -167,8 +167,6 @@ public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<Da
         }
         else {
             new HabitInsertAsyncTask(manager).execute(habit);
-            NotificationHelper helper = getApplication().getNotificationHelper();
-            helper.notify(1, helper.showHabitNotification(habit));
         }
 
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(getActivity().ALARM_SERVICE);
