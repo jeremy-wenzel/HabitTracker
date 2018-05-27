@@ -15,6 +15,7 @@ import java.util.Calendar;
 
 import me.jwenzel.habittracker.broadcast_receivers.NotificationReceiver;
 import me.jwenzel.habittracker.business_objects.BaseHabit;
+import me.jwenzel.habittracker.services.ReminderNotificationService;
 
 public class NotificationHelper extends ContextWrapper {
 
@@ -67,6 +68,7 @@ public class NotificationHelper extends ContextWrapper {
      */
     public void setNotificationReminder(Calendar time, BaseHabit habit) {
         Intent intent = new Intent(this, NotificationReceiver.class);
+        intent.putExtra(ReminderNotificationService.HABIT_KEY, habit.getPrimaryKey());
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, habit.getPrimaryKey(), intent, PendingIntent.FLAG_ONE_SHOT);
         mAlarmManager.cancel(pendingIntent);
         mAlarmManager.set(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), pendingIntent);

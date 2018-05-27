@@ -15,7 +15,7 @@ public class ReminderNotificationService extends IntentService {
     public static final String HABIT_KEY = "id";
 
     public ReminderNotificationService() {
-        super("name");
+        super("ReminderNotificationService");
     }
 
     public ReminderNotificationService(String name) {
@@ -24,7 +24,6 @@ public class ReminderNotificationService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        Log.d("test", "Inside service");
         if (!intent.hasExtra(HABIT_KEY)) {
             Log.d(this.getClass().getCanonicalName(), "Intent had habit key extra");
             return;
