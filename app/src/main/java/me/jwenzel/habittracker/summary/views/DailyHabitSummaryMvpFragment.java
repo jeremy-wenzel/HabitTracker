@@ -1,6 +1,7 @@
 package me.jwenzel.habittracker.summary.views;
 
 import android.app.AlarmManager;
+import android.app.DialogFragment;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -38,6 +40,7 @@ import me.jwenzel.habittracker.business_objects.SimpleTime;
 import me.jwenzel.habittracker.database.async_tasks.HabitDeleteAsyncTask;
 import me.jwenzel.habittracker.database.async_tasks.HabitUpdateAsyncTask;
 import me.jwenzel.habittracker.dialogs.MasterDialoger;
+import me.jwenzel.habittracker.dialogs.TimePickerFragment;
 import me.jwenzel.habittracker.services.ReminderNotificationService;
 import me.jwenzel.habittracker.summary.presenters.DailyHabitSummaryPresenter;
 import me.jwenzel.habittracker.summary.presenters.DailyHabitSummaryPresenterImpl;
@@ -54,6 +57,7 @@ public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<Da
     @BindView(R.id.tv_daily_habit_active_days) protected TextView mDays;
     @BindView(R.id.cb_daily_habit_reminder) protected CheckBox mReminderCheckbox;
     @BindView(R.id.btn_daily_habit_save) protected Button mSaveButton;
+    @BindView(R.id.btn_time_picker) protected Button mTimePickerButton;
 
     private SimpleTime mReminderTime;
     private ArrayList<DayOfWeekEnum> mActiveDays = new ArrayList<>();
@@ -107,6 +111,14 @@ public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<Da
             @Override
             public void onClick(View v) {
                 getPresenter().saveButtonClicked();
+            }
+        });
+
+        mTimePickerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerFragment timepicker = new TimePickerFragment();
+                timepicker.show(getChildFragmentManager(), "TimePicker");
             }
         });
 
@@ -206,6 +218,8 @@ public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<Da
         mDescInput.setText(habit.getDescription());
         mReminderCheckbox.setChecked(habit.isUsingReminders());
     }
+
+
 
     private class SelectHabitAsyncTask extends AsyncTask<Integer, Void, BaseHabit> {
 

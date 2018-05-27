@@ -35,6 +35,7 @@ public class SimpleTime {
 
     @Override
     public String toString() {
+        // This is kinda hacky but we need the format to be hhmm
         return String.format("%02d%02d", mHour, mMinute);
     }
 }
