@@ -15,6 +15,7 @@ import java.util.Calendar;
 
 import me.jwenzel.habittracker.broadcast_receivers.NotificationReceiver;
 import me.jwenzel.habittracker.business_objects.BaseHabit;
+import me.jwenzel.habittracker.business_objects.DailyHabit;
 import me.jwenzel.habittracker.services.ReminderNotificationService;
 
 public class NotificationHelper extends ContextWrapper {
@@ -62,15 +63,19 @@ public class NotificationHelper extends ContextWrapper {
     /**
      * Sets a notification reminder in the AlarmManager to notify the user about a habit
      *
-     * TODO: Can remove the time parameter because the value should be inside of the habit
-     * @param time
-     * @param habit
+     * @param dailyHabit
      */
-    public void setNotificationReminder(Calendar time, BaseHabit habit) {
+    public void setNotificationReminder(DailyHabit dailyHabit) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR, dailyHabit.getReminderTime().get12Hour());
+        calendar.set(Calendar.MINUTE, dailyHabit.getReminderTime().getMinute());
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.AM_PM, dailyHabit.getReminderTime().isAm() ? Calendar.AM : Calendar.PM);
+
         Intent intent = new Intent(this, NotificationReceiver.class);
-        intent.putExtra(ReminderNotificationService.HABIT_KEY, habit.getPrimaryKey());
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, habit.getPrimaryKey(), intent, PendingIntent.FLAG_ONE_SHOT);
+        intent.putExtra(ReminderNotificationService.HABIT_KEY, dailyHabit.getPrimaryKey());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, dailyHabit.getPrimaryKey(), intent, PendingIntent.FLAG_ONE_SHOT);
         mAlarmManager.cancel(pendingIntent);
-        mAlarmManager.set(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), pendingIntent);
+        mAlarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 }

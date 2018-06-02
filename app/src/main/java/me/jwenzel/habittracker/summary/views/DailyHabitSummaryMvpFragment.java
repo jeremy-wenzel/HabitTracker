@@ -3,6 +3,7 @@ package me.jwenzel.habittracker.summary.views;
 import android.app.AlarmManager;
 import android.app.DialogFragment;
 import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.AlarmManagerCompat;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -47,7 +50,8 @@ import me.jwenzel.habittracker.summary.presenters.DailyHabitSummaryPresenterImpl
 import me.jwenzel.habittracker.utilities.DayOfWeekEnum;
 import me.jwenzel.habittracker.utilities.DaysOfWeekEnumTypeConverter;
 
-public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<DailyHabitSummaryView, DailyHabitSummaryPresenter> implements DailyHabitSummaryView {
+public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<DailyHabitSummaryView, DailyHabitSummaryPresenter>
+        implements DailyHabitSummaryView, TimePickerDialog.OnTimeSetListener {
 
     private static final String PRIMARY_KEY = "primary_key";
 
@@ -168,7 +172,6 @@ public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<Da
         String name = mNameInput.getText().toString();
         String desc = mDescInput.getText().toString();
         boolean hasReminders = mReminderCheckbox.isChecked();
-        mReminderTime = new SimpleTime(0, 0);
         mDifficulty = DifficultyEnum.EASY;
 
         DailyHabit habit = new DailyHabit(name, desc, hasReminders, mActiveDays, mReminderTime, mDifficulty, null);
@@ -182,10 +185,16 @@ public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<Da
             new HabitInsertAsyncTask(manager).execute(habit);
         }
 
-        NotificationHelper helper = getApplication().getNotificationHelper();
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.SECOND, 10);
-        helper.setNotificationReminder(calendar, habit);
+        // Set in the AlarmManager if the habit has any
+        // TODO: I wonder if there is a cleaner way to do this. I feel like it doesn't belong here
+        if (hasReminders) {
+            NotificationHelper helper = getApplication().getNotificationHelper();
+            helper.setNotificationReminder(habit);
+            String toast = "Setting time = " + mReminderTime.get12Hour() + ":" + mReminderTime.getMinute()
+                    + (mReminderTime.isAm() ? "AM" : "PM");
+
+            Toast.makeText(getContext(), toast, Toast.LENGTH_LONG).show();
+        }
 
         finishFragment();
     }
@@ -219,6 +228,11 @@ public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<Da
         mReminderCheckbox.setChecked(habit.isUsingReminders());
     }
 
+    @Override
+    public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
+        mReminderTime = new SimpleTime(hourOfDay, minute);
+        Log.d("Hello", mReminderTime.toString());
+    }
 
 
     private class SelectHabitAsyncTask extends AsyncTask<Integer, Void, BaseHabit> {

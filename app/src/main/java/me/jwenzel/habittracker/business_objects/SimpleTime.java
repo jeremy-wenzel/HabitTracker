@@ -21,6 +21,15 @@ public class SimpleTime {
         return mHour;
     }
 
+    public int get12Hour() {
+        int returnHour = mHour;
+        if (!isAm()) {
+            returnHour -= 12;
+        }
+
+        return returnHour;
+    }
+
     public void setHour(int hour) {
         mHour = hour;
     }
@@ -31,6 +40,10 @@ public class SimpleTime {
 
     public void setMinute(int minute) {
         mMinute = minute;
+    }
+
+    public boolean isAm() {
+        return mHour / 12 == 0;
     }
 
     @Override
