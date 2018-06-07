@@ -63,7 +63,7 @@ public class DailyHabitSummaryMvpFragment extends BaseHabitSummaryMvpFragment<Da
     @BindView(R.id.btn_daily_habit_save) protected Button mSaveButton;
     @BindView(R.id.btn_time_picker) protected Button mTimePickerButton;
 
-    private SimpleTime mReminderTime;
+    private SimpleTime mReminderTime = new SimpleTime(0, 0);
     private ArrayList<DayOfWeekEnum> mActiveDays = new ArrayList<>();
     private DifficultyEnum mDifficulty;
 
